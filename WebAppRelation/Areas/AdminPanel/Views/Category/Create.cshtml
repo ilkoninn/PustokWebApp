@@ -1,0 +1,30 @@
+﻿@using WebAppRelation.Areas.AdminPanel.ViewModels;
+@model CreateCategoryVM;
+
+<div class="container">
+    <div class="col-12 grid-margin stretch-card mb-5 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create Book Section</h4>
+                <form class="forms-sample" method="post">
+                    <div class="form-group">
+                        <label asp-for="Name">Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ParentCategoryId">Parent Category Id</label>
+                        <select asp-for="ParentCategoryId" class="form-select">
+                            <option value="null">Choose Category</option>
+                            @foreach (var category in Model.categories)
+                            {
+                                    <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <button class="btn btn-light" asp-controller="Category" asp-action="Table">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

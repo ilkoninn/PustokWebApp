@@ -4,10 +4,10 @@ using WebAppRelation.Areas.AdminPanel.ViewModels;
 namespace WebAppRelation.Areas.AdminPanel.Controllers
 {
     [Area("AdminPanel")]
-    public class BookController : Controller
+    public class BookImagesController : Controller
     {
         AppDbContext _db;
-        public BookController(AppDbContext db)
+        public BookImagesController(AppDbContext db)
         {
             _db = db;
         }
@@ -15,40 +15,30 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         public IActionResult Table()
         {
             AdminVM admin = new AdminVM();
-            admin.Books = _db.Books
-                .Include(x => x.Category)
-                .Include(x => x.Brand)
+            admin.BookImages = _db.BookImages
+                .Include(x => x.Book)
                 .ToList();
             return View(admin);
         }
         public IActionResult Create()
         {
-            ViewData["Categories"] = _db.Categories.ToList();
-            ViewData["Brands"] = _db.Brands.ToList();
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Book Book)
+        public IActionResult Create(BookImages BookImage)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            _db.Books.Add(Book);
-            _db.SaveChanges();
-            return RedirectToAction("Table");
+            return View();
         }
         public IActionResult Update(int Id)
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Update(Book Book)
+        public IActionResult Update(BookImages BookImage)
         {
             return View();
         }
-        public IActionResult Delete(Book Book)
+        public IActionResult Delete(BookImages BookImage)
         {
             return View();
         }

@@ -17,31 +17,16 @@
                                     No:
                                 </th>
                                 <th>
-                                    Title
+                                    Id
                                 </th>
                                 <th>
-                                    Description
+                                    Image
                                 </th>
                                 <th>
-                                    Author
+                                    Book Title
                                 </th>
                                 <th>
-                                    Book Code
-                                </th>
-                                <th>
-                                    Price
-                                </th>
-                                <th>
-                                    Availability
-                                </th>
-                                <th>
-                                    CreatedDate
-                                </th>
-                                <th>
-                                    CategoryId
-                                </th>
-                                <th>
-                                    BrandId
+                                    Book Id
                                 </th>
                             </tr>
                         </thead>
@@ -50,7 +35,7 @@
                                 var count = 0;
                             }
 
-                            @foreach (var item in Model.Books)
+                            @foreach (var item in Model.BookImages)
                             {
                                 count++;
                                 <tr class="table-info">
@@ -58,31 +43,16 @@
                                         @count
                                     </td>
                                     <td>
-                                        @item.Title
+                                        @item.Id
                                     </td>
                                     <td>
-                                        @item.Description
+                                        @item.ImgUrl
                                     </td>
                                     <td>
-                                        @item.Author
+                                        @item.Book.Title
                                     </td>
                                     <td>
-                                        @item.BookCode
-                                    </td>
-                                    <td>
-                                        @item.Price
-                                    </td>
-                                    <td>
-                                        @item.Availability
-                                    </td>
-                                    <td>
-                                        @item.CreatedDate
-                                    </td>
-                                    <td>
-                                        @item.Category.Id
-                                    </td>
-                                    <td>
-                                        @item.Brand.Id
+                                        @item.Book.Id
                                     </td>
                                 </tr>
                             }
