@@ -140,7 +140,6 @@ namespace WebAppRelation.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImgUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
