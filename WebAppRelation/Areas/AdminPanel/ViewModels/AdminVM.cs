@@ -2,9 +2,9 @@
 {
     public class AdminVM
     {
-        public List<Book> Books { get; set; }
-        public List<Category> Categories { get; set; }
-        public List<Brand> Brands { get; set; }
-        public List<BookImages> BookImages { get; set; }
+        public ICollection<Book> Books { get; set; }
+        public ICollection<Category> Categories { get; set; }
+        public ICollection<Brand> Brands { get; set; }
+        public ICollection<BookImages> BookImages { get; set; }
     }
 }

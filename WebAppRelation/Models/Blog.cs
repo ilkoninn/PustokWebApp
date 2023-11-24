@@ -1,4 +1,4 @@
-﻿namespace WebAppRelation.Models
+﻿ namespace WebAppRelation.Models
 {
     public class Blog
     {

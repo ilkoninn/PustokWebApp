@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAppRelation.Areas.AdminPanel.ViewModels;
+using WebAppRelation.Models;
 
 namespace WebAppRelation.Areas.AdminPanel.Controllers
 {
@@ -12,16 +14,21 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             _db = db;
         }
 
-        public IActionResult Table()
+        // <--- Table Section ---> 
+        public async Task<IActionResult> Table()
         {
             AdminVM admin = new AdminVM();
-            admin.Categories = _db.Categories
-                .ToList();
+            admin.Categories = await _db.Categories
+                .ToListAsync();
             return View(admin);
         }
-        public IActionResult Create()
+
+
+        // <--- Create Section --->
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            ICollection<Category> categories = _db.Categories.ToList();
+            ICollection<Category> categories = await _db.Categories.ToListAsync();
             CreateCategoryVM categoryVM = new CreateCategoryVM()
             {
                 categories = categories
@@ -29,39 +36,76 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             return View(categoryVM);
         }
         [HttpPost]
-        public IActionResult Create(CreateCategoryVM categoryVM)
+        public async Task<IActionResult> Create(CreateCategoryVM categoryVM)
         {
 
             if (!ModelState.IsValid)
             {
-                var message = string.Join(" | ", ModelState.Values
-            .SelectMany(v => v.Errors)
-            .Select(e => e.ErrorMessage));
-                Console.WriteLine(message);
                 return View();
             }
             Category category = new Category();
             category.Name = categoryVM.Name;
-            if(categoryVM.ParentCategoryId != "null")
+            if (categoryVM.ParentCategoryId != "null")
             {
                 category.ParentCategoryId = int.Parse(categoryVM.ParentCategoryId);
             }
+
             _db.Categories.Add(category);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
+
             return RedirectToAction("Table");
         }
-        public IActionResult Update(int Id)
+
+
+        // <--- Update Section --->
+        public async Task<IActionResult> Update(int Id)
         {
-            return View();
+            ICollection<Category> categories = await _db.Categories.ToListAsync();
+            Category category = await _db.Categories.FindAsync(Id);
+            CreateCategoryVM categoryVM = new CreateCategoryVM
+            {
+                Id = Id,
+                Name = category.Name,
+                ParentCategoryId = $"{category.ParentCategoryId}",
+                categories = categories
+            };
+
+            return View(categoryVM);
         }
         [HttpPost]
-        public IActionResult Update(Category Category)
+        public async Task<IActionResult> Update(CreateCategoryVM categoryVM)
         {
-            return View();
+            Category oldCategory = new Category();
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            oldCategory.Name = categoryVM.Name;
+            if (categoryVM.ParentCategoryId != "null")
+            {
+                oldCategory.ParentCategoryId = int.Parse(categoryVM.ParentCategoryId);
+            }
+
+            Category newCategory = await _db.Categories.FindAsync(categoryVM.Id);
+            newCategory.Name = oldCategory.Name;
+            newCategory.ParentCategoryId = oldCategory.ParentCategoryId;
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Table");
         }
-        public IActionResult Delete(Category Category)
+        public async Task<IActionResult> Delete(int Id)
         {
-            return View();
+            
+            Category oldCategory = await _db.Categories.FindAsync(Id);
+            if (oldCategory != null) { IQueryable<Category> allRelatedCategories = _db.Categories.Where(c => c.ParentCategoryId == oldCategory.Id); }
+            _db.Categories.RemoveRange(allRelatedCategories);
+
+            _db.Categories.Remove(oldCategory);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Table");
         }
 
     }
