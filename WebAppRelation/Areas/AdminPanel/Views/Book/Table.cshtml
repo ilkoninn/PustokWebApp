@@ -23,9 +23,6 @@
                                     Description
                                 </th>
                                 <th>
-                                    Author
-                                </th>
-                                <th>
                                     Book Code
                                 </th>
                                 <th>
@@ -38,10 +35,13 @@
                                     CreatedDate
                                 </th>
                                 <th>
-                                    CategoryId
+                                    Category Name
                                 </th>
                                 <th>
-                                    BrandId
+                                    Brand Name
+                                </th>
+                                <th>
+                                    Author Full Name
                                 </th>
                             </tr>
                         </thead>
@@ -64,9 +64,6 @@
                                         @item.Description
                                     </td>
                                     <td>
-                                        @item.Author
-                                    </td>
-                                    <td>
                                         @item.BookCode
                                     </td>
                                     <td>
@@ -79,10 +76,13 @@
                                         @item.CreatedDate
                                     </td>
                                     <td>
-                                        @item.Category.Id
+                                        @Model.Categories.FirstOrDefault(x => x.Id == item.CategoryId).Name
                                     </td>
                                     <td>
-                                        @item.Brand.Id
+                                        @Model.Brands.FirstOrDefault(x => x.Id == item.BrandId).Name
+                                    </td>
+                                    <td>
+                                        @Model.Authors.Where(x => x.Id == item.AuthorId).FirstOrDefault().FullName
                                     </td>
                                     <td>
                                         <a asp-controller="Book" asp-action="Update" asp-route-id="@item.Id" class="btn btn-secondary">Update</a>

@@ -13,75 +13,107 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             _db = db;
         }
 
-        public IActionResult Table()
+        public async Task<IActionResult> Table()
         {
             AdminVM admin = new AdminVM();
-            admin.Books = _db.Books
-                .Include(x => x.Category)
-                .Include(x => x.Brand)
-                .ToList();
+            admin.Brands = await _db.Brands.ToListAsync(); 
+            admin.Authors = await _db.Authors.ToListAsync(); 
+            admin.Categories = await _db.Categories.ToListAsync();
+            admin.Books = await _db.Books.ToListAsync();
+
             return View(admin);
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["Categories"] = _db.Categories.ToList();
-            ViewData["Brands"] = _db.Brands.ToList();
-            return View();
+            ICollection<Category> categories = await _db.Categories.ToListAsync();
+            ICollection<Brand> brands = await _db.Brands.ToListAsync();
+            ICollection<Author> authors = await _db.Authors.ToListAsync();
+
+            CreateBookVM createBookVM = new CreateBookVM()
+            {
+                Categories = categories,
+                Brands = brands,
+                Authors = authors,
+            };
+            return View(createBookVM);
         }
         [HttpPost]
-        public IActionResult Create(Book book)
+        public async Task<IActionResult> Create(CreateBookVM createBookVM)
         {
-            ViewData["Categories"] = _db.Categories.ToList();
-            ViewData["Brands"] = _db.Brands.ToList();
+            if(createBookVM.CategoryId == null || createBookVM.BrandId == null || createBookVM.AuthorId == null)
+            {
+                return View(createBookVM);
+            }
             if (!ModelState.IsValid)
             {
-                return View(book);
+                return View(createBookVM);
             }
+            Book newBook = new Book
+            {
+                Title = createBookVM.Title,
+                Description = createBookVM.Description,
+                BookCode = createBookVM.BookCode,
+                Price = createBookVM.Price,
+                Availability = createBookVM.Availability,
+                AuthorId = createBookVM.AuthorId,
+                CategoryId = createBookVM.CategoryId,
+                BrandId = createBookVM.BrandId,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+            };
 
-            book.Category = _db.Categories.FirstOrDefault(x => x.Id == book.CategoryId);
-            book.Brand = _db.Brands.FirstOrDefault(x => x.Id == book.BrandId);
-
-            _db.Books.Add(book);
-            _db.SaveChanges();
+            _db.Books.Add(newBook);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Table");
         }
         [HttpGet]
-        public IActionResult Update(int Id)
+        public async Task<IActionResult> Update(int Id)
         {
             Book Book = _db.Books.Find(Id);
-            ViewData["Categories"] = _db.Categories.ToList();
-            ViewData["Brands"] = _db.Brands.ToList();
+            CreateBookVM createBookVM = new CreateBookVM
+            {
+                Title = Book.Title,
+                Description = Book.Description,
+                BookCode = Book.BookCode,
+                Price = Book.Price,
+                CategoryId = Book.CategoryId,
+                BrandId = Book.BrandId,
+                AuthorId = Book.AuthorId,
+                Availability = Book.Availability,
+                Categories = await _db.Categories.ToListAsync(),
+                Brands = await _db.Brands.ToListAsync(),
+                Authors = await _db.Authors.ToListAsync(),
+            };
 
-            return View(Book);
+            return View(createBookVM);
         }
         [HttpPost]
-        public IActionResult Update(Book newBook)
+        public async Task<IActionResult> Update(CreateBookVM createBookVM)
         {
-            Book oldBook = _db.Books.Find(newBook.Id);
-            ViewData["Categories"] = _db.Categories.ToList();
-            ViewData["Brands"] = _db.Brands.ToList();
+            Book oldBook = await _db.Books.FindAsync(createBookVM.Id);
 
-            oldBook.Title = newBook.Title;
-            oldBook.Description = newBook.Description;
-            oldBook.BookCode = newBook.BookCode;
-            oldBook.Price = newBook.Price;
-            oldBook.Availability = newBook.Availability;
-            oldBook.CreatedDate = newBook.CreatedDate;
-            oldBook.Author = newBook.Author;
-            oldBook.Category = _db.Categories.FirstOrDefault(x => x.Id == newBook.CategoryId);
-            oldBook.Brand = _db.Brands.FirstOrDefault(x => x.Id == newBook.BrandId);
+            oldBook.Title = createBookVM.Title;
+            oldBook.Description = createBookVM.Description;
+            oldBook.BookCode = createBookVM.BookCode;
+            oldBook.Price = createBookVM.Price;
+            oldBook.Availability = createBookVM.Availability;
+            oldBook.AuthorId = createBookVM.AuthorId;
+            oldBook.CategoryId = createBookVM.CategoryId; 
+            oldBook.BrandId = createBookVM.BrandId;
+            oldBook.CreatedDate = oldBook.CreatedDate;
+            oldBook.UpdatedDate = DateTime.Now;
 
-            _db.SaveChanges();
+
+            await _db.SaveChangesAsync();
 
             return RedirectToAction("Table");
         }
-        public IActionResult Delete(int Id)
+        public async Task<IActionResult> Delete(int Id)
         {
-            Book oldBook = _db.Books.Find(Id);
+            Book oldBook = await _db.Books.FindAsync(Id);
             _db.Books.Remove(oldBook);
-            _db.SaveChanges();
-
+            await _db.SaveChangesAsync();
             return RedirectToAction("Table");
         }
 

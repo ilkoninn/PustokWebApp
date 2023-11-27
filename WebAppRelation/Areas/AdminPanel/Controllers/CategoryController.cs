@@ -99,8 +99,13 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         {
             
             Category oldCategory = await _db.Categories.FindAsync(Id);
-            if (oldCategory != null) { IQueryable<Category> allRelatedCategories = _db.Categories.Where(c => c.ParentCategoryId == oldCategory.Id); }
-            _db.Categories.RemoveRange(allRelatedCategories);
+            foreach (var item in await _db.Categories.ToListAsync())
+            {
+                if(item.ParentCategoryId == oldCategory.Id)
+                {
+                    _db.Categories.Remove(item);
+                }
+            }
 
             _db.Categories.Remove(oldCategory);
             await _db.SaveChangesAsync();

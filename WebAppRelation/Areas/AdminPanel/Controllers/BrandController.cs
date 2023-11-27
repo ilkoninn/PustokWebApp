@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAppRelation.Areas.AdminPanel.ViewModels;
+using WebAppRelation.Models;
 
 namespace WebAppRelation.Areas.AdminPanel.Controllers
 {
@@ -12,41 +14,76 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             _db = db;
         }
 
-        public IActionResult Table()
+        // <--- Table Section ---> 
+        public async Task<IActionResult> Table()
         {
             AdminVM admin = new AdminVM();
-            admin.Brands = _db.Brands
-                .ToList();
+            admin.Brands = await _db.Brands
+                .ToListAsync();
             return View(admin);
         }
-        public IActionResult Create()
+
+
+        // <--- Create Section --->
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Brand Brand)
+        public async Task<IActionResult> Create(CreateBrandVM BrandVM)
         {
+
             if (!ModelState.IsValid)
             {
                 return View();
             }
+            Brand Brand = new Brand();
+            Brand.Name = BrandVM.Name;
+
             _db.Brands.Add(Brand);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             return RedirectToAction("Table");
         }
-        public IActionResult Update(int Id)
+
+
+        // <--- Update Section --->
+        public async Task<IActionResult> Update(int Id)
         {
-            return View();
+            ICollection<Brand> Brands = await _db.Brands.ToListAsync();
+            Brand Brand = await _db.Brands.FindAsync(Id);
+            CreateBrandVM BrandVM = new CreateBrandVM
+            {
+                Id = Id,
+                Name = Brand.Name,
+            };
+
+            return View(BrandVM);
         }
         [HttpPost]
-        public IActionResult Update(Brand Brand)
-        {
-            return View();
+        public async Task<IActionResult> Update(CreateBrandVM BrandVM)
+        {if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            Brand newBrand = await _db.Brands.FindAsync(BrandVM.Id);
+            newBrand.Name = BrandVM.Name;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Table");
         }
-        public IActionResult Delete(Brand Brand)
+        public async Task<IActionResult> Delete(int Id)
         {
-            return View();
+
+            Brand oldBrand = await _db.Brands.FindAsync(Id);
+           
+            _db.Brands.Remove(oldBrand);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Table");
         }
 
     }

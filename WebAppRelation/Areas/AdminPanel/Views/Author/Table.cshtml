@@ -1,0 +1,63 @@
+﻿@using WebAppRelation.Areas.AdminPanel.ViewModels;
+@model AdminVM
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h1 class="h3 mb-2 text-gray-800">Author Table</h1>
+                    <a asp-controller="Author" asp-action="Create" class="btn btn-primary">Create</a>
+                </div>
+                <div class="table-responsive pt-3">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No:
+                                </th>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Surname
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var count = 0;
+                            }
+
+                            @foreach (var item in Model.Authors)
+                            {
+                                count++;
+                                <tr class="table-info">
+                                    <td>
+                                        @count
+                                    </td>
+                                    <td>
+                                        @item.Id
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>
+                                        @item.Surname
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Author" asp-action="Update" asp-route-id="@item.Id" class="btn btn-secondary">Update</a>
+                                        <a asp-controller="Author" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

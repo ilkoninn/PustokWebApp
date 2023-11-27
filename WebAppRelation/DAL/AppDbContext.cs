@@ -11,4 +11,5 @@ public class AppDbContext:DbContext
     public DbSet<Brand> Brands { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Author> Authors { get; set; }
 }
