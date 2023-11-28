@@ -18,8 +18,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         public async Task<IActionResult> Table()
         {
             AdminVM admin = new AdminVM();
-            admin.Brands = await _db.Brands
-                .ToListAsync();
+            admin.Brands = await _db.Brands.ToListAsync();
             return View(admin);
         }
 
@@ -38,10 +37,14 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             {
                 return View();
             }
-            Brand Brand = new Brand();
-            Brand.Name = BrandVM.Name;
+            Brand newBrand = new Brand 
+            {
+                Name = BrandVM.Name,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+            };
 
-            _db.Brands.Add(Brand);
+            _db.Brands.Add(newBrand);
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Table");
@@ -68,8 +71,10 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                 return View();
             }
 
-            Brand newBrand = await _db.Brands.FindAsync(BrandVM.Id);
-            newBrand.Name = BrandVM.Name;
+            Brand oldBrand = await _db.Brands.FindAsync(BrandVM.Id);
+            oldBrand.Name = BrandVM.Name;
+            oldBrand.CreatedDate = oldBrand.CreatedDate;
+            oldBrand.UpdatedDate = DateTime.Now;
 
             await _db.SaveChangesAsync();
 

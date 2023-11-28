@@ -12,12 +12,8 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="ParentCategoryId">Parent Category Id</label>
-                        <select asp-for="ParentCategoryId" class="form-select">
-                            <option value="null">Choose Category</option>
-                            @foreach (var category in Model.categories)
-                            {
-                                    <option value="@category.Id">@category.Name</option>
-                            }
+                        <select asp-for="ParentCategoryId" asp-items="new SelectList(Model.categories, nameof(Category.Id), nameof(Category.Name))" class="form-select mx-3">
+                            <option value="null">Choose Book</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary me-2">Submit</button>

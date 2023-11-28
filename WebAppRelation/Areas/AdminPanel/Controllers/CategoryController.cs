@@ -18,8 +18,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         public async Task<IActionResult> Table()
         {
             AdminVM admin = new AdminVM();
-            admin.Categories = await _db.Categories
-                .ToListAsync();
+            admin.Categories = await _db.Categories.ToListAsync();
             return View(admin);
         }
 
@@ -38,7 +37,6 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateCategoryVM categoryVM)
         {
-
             if (!ModelState.IsValid)
             {
                 return View();
@@ -49,6 +47,8 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             {
                 category.ParentCategoryId = int.Parse(categoryVM.ParentCategoryId);
             }
+            category.UpdatedDate = DateTime.Now;
+            category.CreatedDate = DateTime.Now;
 
             _db.Categories.Add(category);
             await _db.SaveChangesAsync();
@@ -75,22 +75,21 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CreateCategoryVM categoryVM)
         {
-            Category oldCategory = new Category();
-
             if (!ModelState.IsValid)
             {
                 return View();
             }
+
+            Category oldCategory = await _db.Categories.FindAsync(categoryVM.Id);
 
             oldCategory.Name = categoryVM.Name;
             if (categoryVM.ParentCategoryId != "null")
             {
                 oldCategory.ParentCategoryId = int.Parse(categoryVM.ParentCategoryId);
             }
+            oldCategory.UpdatedDate = DateTime.Now;
+            oldCategory.CreatedDate = oldCategory.CreatedDate;
 
-            Category newCategory = await _db.Categories.FindAsync(categoryVM.Id);
-            newCategory.Name = oldCategory.Name;
-            newCategory.ParentCategoryId = oldCategory.ParentCategoryId;
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Table");

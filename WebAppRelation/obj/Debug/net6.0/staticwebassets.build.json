@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "z/wyri36Vhf5SGzenYY9ViQbixchBiko3mjch+Zf7CU=",
+  "Hash": "7draDsywETksohFsgNVMGbq2Jg3EZ4wnD33lgrrpf7M=",
   "Source": "WebAppRelation",
   "BasePath": "_content/WebAppRelation",
   "Mode": "Default",
@@ -14669,6 +14669,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\manage\\vendors\\mdi\\fonts\\materialdesignicons-webfont.woff2"
+    },
+    {
+      "Identity": "C:\\Users\\99470\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\ed26d215-491e-4a9a-a220-81763ffba9bcScreenshot_20221116_204618.png",
+      "SourceId": "WebAppRelation",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\99470\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\",
+      "BasePath": "_content/WebAppRelation",
+      "RelativePath": "Upload/BookImages/ed26d215-491e-4a9a-a220-81763ffba9bcScreenshot_20221116_204618.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Upload\\BookImages\\ed26d215-491e-4a9a-a220-81763ffba9bcScreenshot_20221116_204618.png"
     },
     {
       "Identity": "C:\\Users\\99470\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\SliderImages\\24d7c904-d9b7-4e66-b556-db4e2353381bproduct-details-5.jpg",

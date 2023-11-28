@@ -42,6 +42,8 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             {
                 Name = AuthorVM.Name,
                 Surname = AuthorVM.Surname,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
             };
 
             _db.Authors.Add(Author);
@@ -75,6 +77,8 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             Author oldAuthor = await _db.Authors.FindAsync(AuthorVM.Id);
             oldAuthor.Name = AuthorVM.Name;
             oldAuthor.Surname = AuthorVM.Surname;
+            oldAuthor.CreatedDate = oldAuthor.CreatedDate;
+            oldAuthor.UpdatedDate = DateTime.Now;
 
             await _db.SaveChangesAsync();
 
