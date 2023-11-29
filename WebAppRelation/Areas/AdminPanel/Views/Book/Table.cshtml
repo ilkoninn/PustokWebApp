@@ -85,10 +85,10 @@
                                         @{
                                             count = 0;
                                         }
-                                        @foreach (var tag in item.BookTag)
+                                        @foreach (var tag in item.Tags)
                                         {
                                             count++;
-                                            @(item.BookTag.Count() != count ? tag.Tag.Name + ", " : tag.Tag.Name + "")
+                                            @(item.Tags.Count() != count ? tag.Tag. Name + ", " : tag.Tag.Name + "")
                                         }
                                     </td>
                                     <td>

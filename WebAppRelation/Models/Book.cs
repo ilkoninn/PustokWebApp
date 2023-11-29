@@ -17,7 +17,6 @@ namespace WebAppRelation.Models
         public Brand? Brand { get; set; }
         public Category? Category { get; set; }
         public IEnumerable<BookImages>? BookImages { get; set; }
-        public IEnumerable<BookTag>? BookTag { get; set; }
-        public IEnumerable<Tag>? Tags { get; set; }
+        public ICollection<BookTag>? Tags { get; set; }
     }
 }

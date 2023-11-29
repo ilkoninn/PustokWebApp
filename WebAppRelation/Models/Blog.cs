@@ -9,7 +9,6 @@ namespace WebAppRelation.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImgUrl { get; set; }
-        [NotMapped]
-        public ICollection<Tag> Tags { get; set; }
+        public ICollection<BlogTag> Tags { get; set; }
     }
 }

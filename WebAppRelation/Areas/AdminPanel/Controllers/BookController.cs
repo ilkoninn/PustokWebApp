@@ -19,7 +19,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             admin.Authors = await _db.Authors.ToListAsync(); 
             admin.Categories = await _db.Categories.ToListAsync();
             admin.Books = await _db.Books
-                .Include(x => x.BookTag)
+                .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
                 .ToListAsync();
             admin.Tags = await _db.Tags.ToListAsync();
@@ -56,16 +56,16 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             {
                 return View(createBookVM);
             }
-            List<Tag> tags = new List<Tag>();
+            //List<BookTag> tags = new List<BookTag>();
 
-            foreach (int id in createBookVM.TagIds)
-            {
-                if (await _db.Tags.AnyAsync(t => t.Id == id))
-                {
-                    Tag item = await _db.Tags.Where(t => t.Id == id).FirstOrDefaultAsync();
-                    tags.Add(item);
-                }
-            }
+            //foreach (int id in createBookVM.TagIds)
+            //{
+            //    if (await _db.Tags.AnyAsync(t => t.Id == id))
+            //    {
+            //        BookTag item = await _db.BookTags.Where(t => t.Id == id).FirstOrDefaultAsync();
+            //        tags.Add(item);
+            //    }
+            //}
 
             Book newBook = new Book
             {
@@ -77,26 +77,25 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                 AuthorId = createBookVM.AuthorId,
                 CategoryId = createBookVM.CategoryId,
                 BrandId = createBookVM.BrandId,
-                Tags = tags,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
             };
 
             //await _db.SaveChangesAsync();
 
-            //if (createBookVM.TagIds != null)
-            //{
-            //    foreach (var tagId in createBookVM.TagIds)
-            //    {
-            //        BookTag bookTag = new BookTag
-            //        {
-            //            Book = newBook,
-            //            TagId = tagId,
-            //        };
+            if (createBookVM.TagIds != null)
+            {
+                foreach (var tagId in createBookVM.TagIds)
+                {
+                    BookTag bookTag = new BookTag
+                    {
+                        Book = newBook,
+                        TagId = tagId,
+                    };
 
-            //        _db.BookTags.Add(bookTag);
-            //    }
-            //}
+                    _db.BookTags.Add(bookTag);
+                }
+            }
 
             _db.Books.Add(newBook);
             await _db.SaveChangesAsync();
@@ -107,7 +106,19 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int Id)
         {
-            Book Book = _db.Books.Find(Id);
+            Book Book = await _db.Books
+                .Include(x => x.Tags)
+                .ThenInclude(x => x.Tag)
+                .FirstOrDefaultAsync(p=> p.Id == Id);
+
+            ICollection<Tag> tags = await _db.Tags.ToListAsync();
+
+            List<int> tagIds = new();
+            
+            foreach (Tag tag in tags)
+                foreach (var item in Book.Tags)
+                    if(tag.Id == item.TagId)
+                        tagIds.Add(tag.Id);
 
             CreateBookVM createBookVM = new CreateBookVM
             {
@@ -122,6 +133,8 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                 Categories = await _db.Categories.ToListAsync(),
                 Brands = await _db.Brands.ToListAsync(),
                 Authors = await _db.Authors.ToListAsync(),
+                Tags = tags,
+                TagIds = tagIds,
             };
 
             return View(createBookVM);
@@ -129,7 +142,10 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CreateBookVM createBookVM)
         {
-            Book oldBook = await _db.Books.FindAsync(createBookVM.Id);
+            Book oldBook = await _db.Books
+                .Include(x => x.Tags)
+                .ThenInclude(x => x.Tag)
+                .FirstOrDefaultAsync(x => x.Id == createBookVM.Id);
 
             oldBook.Title = createBookVM.Title;
             oldBook.Description = createBookVM.Description;
@@ -142,6 +158,21 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             oldBook.CreatedDate = oldBook.CreatedDate;
             oldBook.UpdatedDate = DateTime.Now;
 
+            oldBook.Tags.Clear();
+
+            if (createBookVM.TagIds != null)
+            {
+                foreach (var tagId in createBookVM.TagIds)
+                {
+                    BookTag bookTag = new BookTag()
+                    {
+                        Book = oldBook,
+                        TagId = tagId,
+                    };
+
+                    oldBook.Tags.Add(bookTag);
+                }
+            }
 
             await _db.SaveChangesAsync();
 

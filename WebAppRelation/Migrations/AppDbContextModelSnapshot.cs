@@ -68,9 +68,6 @@ namespace WebAppRelation.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TagId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -79,8 +76,6 @@ namespace WebAppRelation.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TagId");
 
                     b.ToTable("Blogs");
                 });
@@ -148,9 +143,6 @@ namespace WebAppRelation.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("TagId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -165,8 +157,6 @@ namespace WebAppRelation.Migrations
                     b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("TagId");
 
                     b.ToTable("Books");
                 });
@@ -284,12 +274,6 @@ namespace WebAppRelation.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BlogId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BookId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -302,30 +286,19 @@ namespace WebAppRelation.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BlogId");
-
-                    b.HasIndex("BookId");
-
                     b.ToTable("Tags");
-                });
-
-            modelBuilder.Entity("WebAppRelation.Models.Blog", b =>
-                {
-                    b.HasOne("WebAppRelation.Models.Tag", null)
-                        .WithMany("Blogs")
-                        .HasForeignKey("TagId");
                 });
 
             modelBuilder.Entity("WebAppRelation.Models.BlogTag", b =>
                 {
                     b.HasOne("WebAppRelation.Models.Blog", "Blog")
-                        .WithMany()
+                        .WithMany("Tags")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebAppRelation.Models.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("Blogs")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -355,10 +328,6 @@ namespace WebAppRelation.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebAppRelation.Models.Tag", null)
-                        .WithMany("Books")
-                        .HasForeignKey("TagId");
-
                     b.Navigation("Author");
 
                     b.Navigation("Brand");
@@ -380,13 +349,13 @@ namespace WebAppRelation.Migrations
             modelBuilder.Entity("WebAppRelation.Models.BookTag", b =>
                 {
                     b.HasOne("WebAppRelation.Models.Book", "Book")
-                        .WithMany()
+                        .WithMany("Tags")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebAppRelation.Models.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("Books")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -396,29 +365,21 @@ namespace WebAppRelation.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("WebAppRelation.Models.Tag", b =>
-                {
-                    b.HasOne("WebAppRelation.Models.Blog", "Blog")
-                        .WithMany()
-                        .HasForeignKey("BlogId");
-
-                    b.HasOne("WebAppRelation.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId");
-
-                    b.Navigation("Blog");
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("WebAppRelation.Models.Author", b =>
                 {
                     b.Navigation("Books");
                 });
 
+            modelBuilder.Entity("WebAppRelation.Models.Blog", b =>
+                {
+                    b.Navigation("Tags");
+                });
+
             modelBuilder.Entity("WebAppRelation.Models.Book", b =>
                 {
                     b.Navigation("BookImages");
+
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("WebAppRelation.Models.Brand", b =>

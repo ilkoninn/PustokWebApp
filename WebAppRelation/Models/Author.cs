@@ -7,7 +7,7 @@ namespace WebAppRelation.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public IEnumerable<Book>? Books { get; set; }
+        public IEnumerable<Book> Books { get; set; }
         [NotMapped]
         
         public string FullName
