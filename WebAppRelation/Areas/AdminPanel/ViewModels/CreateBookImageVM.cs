@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using WebAppRelation.Areas.AdminPanel.ViewModels.Entity;
 
 namespace WebAppRelation.Areas.AdminPanel.ViewModels
 {

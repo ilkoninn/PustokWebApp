@@ -12,4 +12,6 @@ public class AppDbContext:DbContext
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public DbSet<BlogTag> BlogTags { get; set; }
+    public DbSet<BookTag> BookTags { get; set; }
 }

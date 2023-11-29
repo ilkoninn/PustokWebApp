@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using WebAppRelation.Models.Entity;
 
 namespace WebAppRelation.Models
 {
@@ -6,7 +7,7 @@ namespace WebAppRelation.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public ICollection<Book>? Books { get; set; }
+        public IEnumerable<Book>? Books { get; set; }
         [NotMapped]
         
         public string FullName

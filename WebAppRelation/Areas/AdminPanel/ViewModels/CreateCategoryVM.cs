@@ -1,4 +1,6 @@
-﻿namespace WebAppRelation.Areas.AdminPanel.ViewModels
+﻿using WebAppRelation.Areas.AdminPanel.ViewModels.Entity;
+
+namespace WebAppRelation.Areas.AdminPanel.ViewModels
 {
     public class CreateCategoryVM : BaseAuditableEntityVM
     {

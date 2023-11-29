@@ -32,9 +32,6 @@
                                     Availability
                                 </th>
                                 <th>
-                                    CreatedDate
-                                </th>
-                                <th>
                                     Category Name
                                 </th>
                                 <th>
@@ -42,6 +39,9 @@
                                 </th>
                                 <th>
                                     Author Full Name
+                                </th>
+                                <th>
+                                    Tags Name
                                 </th>
                             </tr>
                         </thead>
@@ -73,9 +73,6 @@
                                         @item.Availability
                                     </td>
                                     <td>
-                                        @item.CreatedDate
-                                    </td>
-                                    <td>
                                         @Model.Categories.FirstOrDefault(x => x.Id == item.CategoryId).Name
                                     </td>
                                     <td>
@@ -83,6 +80,16 @@
                                     </td>
                                     <td>
                                         @Model.Authors.Where(x => x.Id == item.AuthorId).FirstOrDefault().FullName
+                                    </td>
+                                    <td>
+                                        @{
+                                            count = 0;
+                                        }
+                                        @foreach (var tag in item.BookTag)
+                                        {
+                                            count++;
+                                            @(item.BookTag.Count() != count ? tag.Tag.Name + ", " : tag.Tag.Name + "")
+                                        }
                                     </td>
                                     <td>
                                         <a asp-controller="Book" asp-action="Update" asp-route-id="@item.Id" class="btn btn-secondary">Update</a>

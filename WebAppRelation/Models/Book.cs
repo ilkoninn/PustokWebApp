@@ -1,4 +1,7 @@
-﻿namespace WebAppRelation.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using WebAppRelation.Models.Entity;
+
+namespace WebAppRelation.Models
 {
     public class Book : BaseAuditableEntity
     {
@@ -13,7 +16,8 @@
         public Author? Author { get; set; }
         public Brand? Brand { get; set; }
         public Category? Category { get; set; }
-        public List<BookImages>? BookImages { get; set; }
-        public List<Tag>? Tag { get; set; }
+        public IEnumerable<BookImages>? BookImages { get; set; }
+        public IEnumerable<BookTag>? BookTag { get; set; }
+        public IEnumerable<Tag>? Tags { get; set; }
     }
 }

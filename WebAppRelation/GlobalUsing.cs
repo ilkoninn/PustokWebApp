@@ -5,3 +5,4 @@ global using WebAppRelation.DAL;
 global using WebAppRelation.Models;
 global using BB205_Pronia.Helpers;
 global using WebAppRelation.Areas.AdminPanel.ViewModels;
+global using WebAppRelation.Models.Entity;

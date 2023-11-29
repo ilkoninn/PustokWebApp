@@ -7,5 +7,6 @@
         public ICollection<Brand> Brands { get; set; }
         public ICollection<BookImages> BookImages { get; set; }
         public ICollection<Author> Authors { get; set; }
+        public ICollection<Tag> Tags { get; set; }
     }
 }

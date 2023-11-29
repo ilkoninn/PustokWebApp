@@ -1,4 +1,6 @@
-﻿namespace WebAppRelation.Areas.AdminPanel.ViewModels
+﻿using WebAppRelation.Models.Entity;
+
+namespace WebAppRelation.Areas.AdminPanel.ViewModels
 {
     public class CreateBrandVM : BaseAuditableEntity
     {

@@ -17,6 +17,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             _env = environment;
         }
 
+        // <--- Table Section --->
         public async Task<IActionResult> Table()
         {
             AdminVM admin = new AdminVM();
@@ -25,6 +26,9 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
             return View(admin);
         }
+
+
+        // <--- Create Section --->
         public async Task<IActionResult> Create()
         {
             ICollection<Book> books = await _db.Books.ToListAsync();
@@ -72,6 +76,9 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction("Table");
         }
+
+
+        // <--- Update Section --->
         public async Task<IActionResult> Update(int Id)
         {
             BookImages oldBookImages = await _db.BookImages.FirstOrDefaultAsync(x => x.Id == Id);
