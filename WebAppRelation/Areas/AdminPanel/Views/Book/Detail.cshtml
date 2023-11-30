@@ -1,0 +1,32 @@
+﻿@model CreateBookVM
+
+<div class="container">
+    <div class="col-12 grid-margin stretch-card mb-5 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Book Detail Section</h1>
+
+                <h6>Title: @Model.Title</h6>
+                <h6>BookCode: @Model.BookCode</h6>
+                <h6>Price: @Model.Price</h6>
+                <h6>Category: @Model.Categories.FirstOrDefault(x => x.Id == Model.CategoryId).Name</h6>
+                <h6>Brand: @Model.Brands.FirstOrDefault(x => x.Id == Model.BrandId).Name</h6>
+                <h6>Author: @Model.Authors.Where(x => x.Id == Model.AuthorId).FirstOrDefault().FullName</h6>
+                <h6>
+                    Tags: 
+                    @{
+                       int count = 0;
+                    }
+                    @foreach (var tag in Model.Tags)
+                    {
+                        count++;
+                        @(Model.Tags.Count() != count ? tag.Name + ", " : tag.Name + "")
+                    }
+                </h6>
+                <p>
+                    @Model.Description
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

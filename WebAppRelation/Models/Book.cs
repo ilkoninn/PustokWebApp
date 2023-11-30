@@ -9,14 +9,13 @@ namespace WebAppRelation.Models
         public string Description { get; set; }
         public string BookCode { get; set; }
         public double Price { get; set; }
-        public bool Availability { get; set; }
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
         public int AuthorId { get; set; }
         public Author? Author { get; set; }
         public Brand? Brand { get; set; }
         public Category? Category { get; set; }
-        public IEnumerable<BookImages>? BookImages { get; set; }
+        public ICollection<BookImages>? BookImages { get; set; }
         public ICollection<BookTag>? Tags { get; set; }
     }
 }

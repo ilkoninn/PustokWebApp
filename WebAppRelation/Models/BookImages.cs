@@ -7,6 +7,7 @@ namespace WebAppRelation.Models
     {
         public string? ImgUrl { get; set; }
         public int BookId { get; set; }
+        public bool? IsPrime { get; set; }
         public Book? Book { get; set; }
 
         [NotMapped]

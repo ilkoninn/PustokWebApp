@@ -1,13 +1,17 @@
 ﻿
+using WebAppRelation.Models;
+
 namespace WebAppRelation.Areas.AdminPanel.Controllers
 {
     [Area("AdminPanel")]
     public class BookController : Controller
     {
-        AppDbContext _db;
-        public BookController(AppDbContext db)
+        private readonly AppDbContext _db;
+        private readonly IWebHostEnvironment _env;
+        public BookController(AppDbContext db, IWebHostEnvironment environment)
         {
             _db = db;
+            _env = environment;
         }
 
 
@@ -21,6 +25,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             admin.Books = await _db.Books
                 .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
+                .Include(x => x.BookImages)
                 .ToListAsync();
             admin.Tags = await _db.Tags.ToListAsync();
 
@@ -48,7 +53,12 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateBookVM createBookVM)
         {
-            if(createBookVM.CategoryId == null || createBookVM.BrandId == null || createBookVM.AuthorId == null)
+            createBookVM.Authors = await _db.Authors.ToListAsync();
+            createBookVM.Categories = await _db.Categories.ToListAsync();
+            createBookVM.Tags = await _db.Tags.ToListAsync();
+            createBookVM.Brands = await _db.Brands.ToListAsync();
+
+            if (createBookVM.CategoryId == null || createBookVM.BrandId == null || createBookVM.AuthorId == null)
             {
                 return View(createBookVM);
             }
@@ -56,6 +66,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             {
                 return View(createBookVM);
             }
+
             //List<BookTag> tags = new List<BookTag>();
 
             //foreach (int id in createBookVM.TagIds)
@@ -73,12 +84,12 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                 Description = createBookVM.Description,
                 BookCode = createBookVM.BookCode,
                 Price = createBookVM.Price,
-                Availability = createBookVM.Availability,
                 AuthorId = createBookVM.AuthorId,
                 CategoryId = createBookVM.CategoryId,
                 BrandId = createBookVM.BrandId,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
+                BookImages = new List<BookImages>()
             };
 
             //await _db.SaveChangesAsync();
@@ -97,6 +108,103 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                 }
             }
 
+            if(createBookVM.MainImage != null)
+            {
+                if (!createBookVM.MainImage.CheckType("image/"))
+                {
+                    ModelState.AddModelError("ImageFile", "You can upload only images");
+                    return View(createBookVM);
+                }
+                if (!createBookVM.MainImage.CheckLong(2097152))
+                {
+                    ModelState.AddModelError("ImageFile", "The maximum size of image is 2MB!");
+                    return View(createBookVM);
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(createBookVM);
+                }
+
+                BookImages bookImage = new BookImages
+                {
+                    IsPrime = true,
+                    Book = newBook,
+                    ImgUrl = createBookVM.MainImage.Upload(_env.WebRootPath, @"\Upload\BookImages\")
+                };
+
+                newBook.BookImages.Add(bookImage);
+            }
+            else
+            {
+                ModelState.AddModelError("MainImage", "You must be upload a main image!");
+                return View(createBookVM);
+            }
+
+            if (createBookVM.HoverImage != null)
+            {
+                if (!createBookVM.HoverImage.CheckType("image/"))
+                {
+                    ModelState.AddModelError("ImageFile", "You can upload only images");
+                    return View(createBookVM);
+                }
+                if (!createBookVM.HoverImage.CheckLong(2097152))
+                {
+                    ModelState.AddModelError("ImageFile", "The maximum size of image is 2MB!");
+                    return View(createBookVM);
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(createBookVM);
+                }
+
+                BookImages bookImage = new BookImages
+                {
+                    IsPrime = false,
+                    Book = newBook,
+                    ImgUrl = createBookVM.HoverImage.Upload(_env.WebRootPath, @"\Upload\BookImages\")
+                };
+
+                newBook.BookImages.Add(bookImage);
+            }
+            else
+            {
+                ModelState.AddModelError("HoverImage", "You must be upload a hover image!");
+                return View(createBookVM);
+            }
+
+            if (createBookVM.Images != null)
+            {
+                foreach (var item in createBookVM.Images)
+                {
+                    if (!item.CheckType("image/"))
+                    {
+                        ModelState.AddModelError("ImageFile", "You can upload only images");
+                        return View(createBookVM);
+                    }
+                    if (!item.CheckLong(2097152))
+                    {
+                        ModelState.AddModelError("ImageFile", "The maximum size of image is 2MB!");
+                        return View(createBookVM);
+                    }
+
+                    if (!ModelState.IsValid)
+                    {
+                        return View(createBookVM);
+                    }
+
+                    BookImages bookImage = new BookImages
+                    {
+                        IsPrime = null,
+                        Book = newBook,
+                        ImgUrl = item.Upload(_env.WebRootPath, @"\Upload\BookImages\")
+                    };
+
+                    newBook.BookImages.Add(bookImage);
+                }
+            }
+
             _db.Books.Add(newBook);
             await _db.SaveChangesAsync();
             return RedirectToAction("Table");
@@ -109,6 +217,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             Book Book = await _db.Books
                 .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
+                .Include(x => x.BookImages)
                 .FirstOrDefaultAsync(p=> p.Id == Id);
 
             ICollection<Tag> tags = await _db.Tags.ToListAsync();
@@ -120,7 +229,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                     if(tag.Id == item.TagId)
                         tagIds.Add(tag.Id);
 
-            CreateBookVM createBookVM = new CreateBookVM
+            UpdateBookVM updateBookVM = new UpdateBookVM
             {
                 Title = Book.Title,
                 Description = Book.Description,
@@ -129,15 +238,28 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                 CategoryId = Book.CategoryId,
                 BrandId = Book.BrandId,
                 AuthorId = Book.AuthorId,
-                Availability = Book.Availability,
                 Categories = await _db.Categories.ToListAsync(),
                 Brands = await _db.Brands.ToListAsync(),
                 Authors = await _db.Authors.ToListAsync(),
                 Tags = tags,
                 TagIds = tagIds,
+                BookImageVMs = new List<BookImageVM>(),
             };
 
-            return View(createBookVM);
+
+            foreach (var item in Book.BookImages)
+            {
+                BookImageVM bookImageVM = new BookImageVM
+                {
+                    Id = item.Id,
+                    IsPrime = item.IsPrime,
+                    ImgUrl = item.ImgUrl,
+                };
+
+                updateBookVM.BookImageVMs.Add(bookImageVM);
+            }
+
+            return View(updateBookVM);
         }
         [HttpPost]
         public async Task<IActionResult> Update(CreateBookVM createBookVM)
@@ -151,7 +273,6 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             oldBook.Description = createBookVM.Description;
             oldBook.BookCode = createBookVM.BookCode;
             oldBook.Price = createBookVM.Price;
-            oldBook.Availability = createBookVM.Availability;
             oldBook.AuthorId = createBookVM.AuthorId;
             oldBook.CategoryId = createBookVM.CategoryId; 
             oldBook.BrandId = createBookVM.BrandId;
@@ -178,6 +299,42 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
             return RedirectToAction("Table");
         }
+
+        public async Task<IActionResult> Detail(int Id)
+        {
+            Book oldBook = await _db.Books
+                .Include(x => x.Tags)
+                .ThenInclude(x => x.Tag)
+                .FirstOrDefaultAsync(x => x.Id == Id);
+
+            var tags = await _db.Tags.ToListAsync();
+
+            List<Tag> bookTags = new List<Tag>();
+
+            foreach (var tag in tags)
+                foreach (var item in oldBook.Tags)
+                    if (tag.Id == item.TagId)
+                        bookTags.Add(tag);
+
+            
+            CreateBookVM createBookVM = new CreateBookVM
+            {
+                Title = oldBook.Title,
+                Description = oldBook.Description,
+                BookCode = oldBook.BookCode,
+                Price = oldBook.Price,
+                CategoryId = oldBook.CategoryId,
+                BrandId = oldBook.BrandId,
+                AuthorId = oldBook.AuthorId,
+                Categories = await _db.Categories.ToListAsync(),
+                Brands = await _db.Brands.ToListAsync(),
+                Authors = await _db.Authors.ToListAsync(),
+                Tags = bookTags,
+            };
+
+            return View(createBookVM);
+        }
+
         public async Task<IActionResult> Delete(int Id)
         {
             Book oldBook = await _db.Books.FindAsync(Id);

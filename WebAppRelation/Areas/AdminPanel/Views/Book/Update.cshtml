@@ -1,4 +1,4 @@
-﻿@model CreateBookVM
+﻿@model UpdateBookVM
 
 <div class="container">
     <div class="col-12 grid-margin stretch-card mb-5 mt-5">
@@ -21,10 +21,6 @@
                     <div class="form-group">
                         <label asp-for="Price">Price</label>
                         <input asp-for="Price" class="form-control" placeholder="Price">
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Availability">Availability</label>
-                        <input asp-for="Availability" placeholder="Availability">
                     </div>
                     <div class="form-group">
                         <label asp-for="AuthorId">Author</label>
@@ -50,6 +46,37 @@
                         <select asp-for="TagIds" asp-items="new SelectList(Model.Tags, nameof(Tag.Id), nameof(Tag.Name))" class="form-select">
                         </select>
                     </div>
+                    <div class="row align-items-center">
+                        <div class="mb-3 col-md-4">
+                            <label asp-for="MainImage" class="form-label">Main Image</label>
+                            <input class="form-control" asp-for="MainImage">
+                            <div style="color: red; margin-top: 10px; margin-left: 10px;">
+                                <span asp-validation-for="MainImage"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label asp-for="HoverImage" class="form-label">Hover Image</label>
+                            <input class="form-control" asp-for="HoverImage">
+                            <div style="color: red; margin-top: 10px; margin-left: 10px;">
+                                <span asp-validation-for="HoverImage"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 mb-4">
+                        @foreach (var item in Model.BookImageVMs.Where(p => p.IsPrime == null).ToList())
+                        {
+                            <div class="col-2 position-relative">
+                                <img style="width:100%;height:200px" src="~/Upload/BookImages/@item.ImgUrl" />
+                                <input type="hidden" value="@item.Id" name="ImageIds" />
+                                <button type="button" class="btn btn-danger position-absolute custom-delete" style="right:10px">X</button>
+                            </div>
+                        }
+                        <label asp-for="Images" class="form-label">Additional Images</label>
+                        <input class="form-control" asp-for="Images">
+                        <span asp-validation-for="Images" style="color:red"></span>
+
+                    </div>
+
                     <button type="submit" class="btn btn-primary me-2">Submit</button>
                     <button class="btn btn-light" asp-controller="Book" asp-action="Table">Cancel</button>
                 </form>
@@ -57,3 +84,11 @@
         </div>
     </div>
 </div>
+<script>
+    let btn = document.querySelectorAll(".custom-delete")
+    btn.forEach(b => {
+        b.addEventListener("click", function () {
+            b.parentElement.remove()
+        })
+    })
+</script>

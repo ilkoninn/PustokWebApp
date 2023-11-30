@@ -1,8 +1,7 @@
-﻿using WebAppRelation.Areas.AdminPanel.ViewModels.Entity;
-
+﻿
 namespace WebAppRelation.Areas.AdminPanel.ViewModels
 {
-    public class CreateBookVM : BaseAuditableEntityVM
+    public class UpdateBookVM : BaseAuditableEntityVM
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -13,15 +12,21 @@ namespace WebAppRelation.Areas.AdminPanel.ViewModels
         public int AuthorId { get; set; }
         public ICollection<Author>? Authors { get; set; }
         public int CategoryId { get; set; }
-        public ICollection<Category>? Categories { get; set;}
+        public ICollection<Category>? Categories { get; set; }
         public int BrandId { get; set; }
         public ICollection<Brand>? Brands { get; set; }
 
         // Product Images Section 
-        [Required]
-        public IFormFile MainImage { get; set; }
-        [Required]
-        public IFormFile HoverImage { get; set; }
+        public IFormFile? MainImage { get; set; }
+        public IFormFile? HoverImage { get; set; }
         public List<IFormFile>? Images { get; set; }
+        public List<BookImageVM> BookImageVMs { get; set; }
+        public List<int> ImageIds { get; set; }
+    }
+
+    public class BookImageVM : BaseAuditableEntityVM
+    {
+        public string ImgUrl { get; set; }
+        public bool? IsPrime { get; set; }
     }
 }

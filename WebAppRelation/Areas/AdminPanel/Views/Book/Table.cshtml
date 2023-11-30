@@ -29,9 +29,6 @@
                                     Price
                                 </th>
                                 <th>
-                                    Availability
-                                </th>
-                                <th>
                                     Category Name
                                 </th>
                                 <th>
@@ -42,6 +39,9 @@
                                 </th>
                                 <th>
                                     Tags Name
+                                </th>
+                                <th>
+                                    Prime Image
                                 </th>
                             </tr>
                         </thead>
@@ -70,9 +70,6 @@
                                         @item.Price
                                     </td>
                                     <td>
-                                        @item.Availability
-                                    </td>
-                                    <td>
                                         @Model.Categories.FirstOrDefault(x => x.Id == item.CategoryId).Name
                                     </td>
                                     <td>
@@ -92,8 +89,14 @@
                                         }
                                     </td>
                                     <td>
+                                        <div style="width:100px">
+                                            <img width="100%" src="~/Upload/BookImages/@item.BookImages.FirstOrDefault(x => x.IsPrime == true)?.ImgUrl">
+                                        </div>
+                                    </td>
+                                    <td>
                                         <a asp-controller="Book" asp-action="Update" asp-route-id="@item.Id" class="btn btn-secondary">Update</a>
                                         <a asp-controller="Book" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                        <a asp-controller="Book" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-danger">Detail</a>
                                     </td>
                                 </tr>
                             }
