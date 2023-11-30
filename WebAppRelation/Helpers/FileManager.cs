@@ -35,7 +35,7 @@ namespace BB205_Pronia.Helpers
             return fileName;
         }
 
-        public static void Delete(string ImgUrl, string envPath, string folderName)
+        public static void Delete(this string ImgUrl, string envPath, string folderName)
         {
             string path = envPath + folderName + ImgUrl;
 

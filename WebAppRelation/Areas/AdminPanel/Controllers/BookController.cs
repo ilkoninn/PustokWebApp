@@ -262,28 +262,29 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             return View(updateBookVM);
         }
         [HttpPost]
-        public async Task<IActionResult> Update(CreateBookVM createBookVM)
+        public async Task<IActionResult> Update(UpdateBookVM updateBookVM)
         {
             Book oldBook = await _db.Books
                 .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
-                .FirstOrDefaultAsync(x => x.Id == createBookVM.Id);
+                .Include(x => x.BookImages)
+                .FirstOrDefaultAsync(x => x.Id == updateBookVM.Id);
 
-            oldBook.Title = createBookVM.Title;
-            oldBook.Description = createBookVM.Description;
-            oldBook.BookCode = createBookVM.BookCode;
-            oldBook.Price = createBookVM.Price;
-            oldBook.AuthorId = createBookVM.AuthorId;
-            oldBook.CategoryId = createBookVM.CategoryId; 
-            oldBook.BrandId = createBookVM.BrandId;
+            oldBook.Title = updateBookVM.Title;
+            oldBook.Description = updateBookVM.Description;
+            oldBook.BookCode = updateBookVM.BookCode;
+            oldBook.Price = updateBookVM.Price;
+            oldBook.AuthorId = updateBookVM.AuthorId;
+            oldBook.CategoryId = updateBookVM.CategoryId; 
+            oldBook.BrandId = updateBookVM.BrandId;
             oldBook.CreatedDate = oldBook.CreatedDate;
             oldBook.UpdatedDate = DateTime.Now;
 
             oldBook.Tags.Clear();
 
-            if (createBookVM.TagIds != null)
+            if (updateBookVM.TagIds != null)
             {
-                foreach (var tagId in createBookVM.TagIds)
+                foreach (var tagId in updateBookVM.TagIds)
                 {
                     BookTag bookTag = new BookTag()
                     {
@@ -292,6 +293,116 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                     };
 
                     oldBook.Tags.Add(bookTag);
+                }
+            }
+
+            if (updateBookVM.MainImage != null)
+            {
+                if (!updateBookVM.MainImage.CheckType("image/"))
+                {
+                    ModelState.AddModelError("ImageFile", "You can upload only images");
+                    return View(updateBookVM);
+                }
+                if (!updateBookVM.MainImage.CheckLong(2097152))
+                {
+                    ModelState.AddModelError("ImageFile", "The maximum size of image is 2MB!");
+                    return View(updateBookVM);
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(updateBookVM);
+                }
+
+                var existMainPhoto = oldBook.BookImages.FirstOrDefault(p => p.IsPrime == true);
+                existMainPhoto.ImgUrl.Delete(_env.WebRootPath, @"\Upload\BookImages\");
+                oldBook.BookImages.Remove(existMainPhoto);
+
+                BookImages bookImage = new BookImages
+                {
+                    IsPrime = true,
+                    Book = oldBook,
+                    ImgUrl = updateBookVM.MainImage.Upload(_env.WebRootPath, @"\Upload\BookImages\")
+                };
+
+                oldBook.BookImages.Add(bookImage);
+            }
+            else
+            {
+                ModelState.AddModelError("MainImage", "You must be upload a main image!");
+                return View(updateBookVM);
+            }
+
+            if (updateBookVM.HoverImage != null)
+            {
+                if (!updateBookVM.HoverImage.CheckType("image/"))
+                {
+                    ModelState.AddModelError("ImageFile", "You can upload only images");
+                    return View(updateBookVM);
+                }
+                if (!updateBookVM.HoverImage.CheckLong(2097152))
+                {
+                    ModelState.AddModelError("ImageFile", "The maximum size of image is 2MB!");
+                    return View(updateBookVM);
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(updateBookVM);
+                }
+
+                var existMainPhoto = oldBook.BookImages.FirstOrDefault(p => p.IsPrime == false);
+                existMainPhoto.ImgUrl.Delete(_env.WebRootPath, @"\Upload\BookImages\");
+                oldBook.BookImages.Remove(existMainPhoto);
+
+                BookImages bookImage = new BookImages
+                {
+                    IsPrime = false,
+                    Book = oldBook,
+                    ImgUrl = updateBookVM.HoverImage.Upload(_env.WebRootPath, @"\Upload\BookImages\")
+                };
+
+                oldBook.BookImages.Add(bookImage);
+            }
+            else
+            {
+                ModelState.AddModelError("HoverImage", "You must be upload a hover image!");
+                return View(updateBookVM);
+            }
+
+            List<BookImages> removeList = oldBook.BookImages.Where(pt => !updateBookVM.ImageIds.Contains(pt.Id) && pt.IsPrime == null).ToList();
+            if (removeList.Count > 0)
+            {
+                foreach (var item in removeList)
+                {
+                    oldBook.BookImages.Remove(item);
+                    item.ImgUrl.Delete(_env.WebRootPath, @"\Upload\Product\");
+                }
+            }
+
+
+            TempData["Error"] = "";
+            if (updateBookVM.Images != null)
+            {
+                foreach (IFormFile imgFile in updateBookVM.Images)
+                {
+                    if (!imgFile.CheckType("image/"))
+                    {
+                        TempData["Error"] += $"{imgFile.FileName} uygun tipde deyil ";
+                        continue;
+                    }
+                    if (!imgFile.CheckLong(2097152))
+                    {
+                        TempData["Error"] += $"{imgFile.FileName} file-nin olcusu coxdur";
+                        continue;
+                    }
+                    BookImages bookImages = new BookImages()
+                    {
+                        IsPrime = null,
+                        BookId = oldBook.Id,
+                        ImgUrl = imgFile.Upload(_env.WebRootPath, "/Upload/Product/")
+                    };
+                    oldBook.BookImages.Add(bookImages);
                 }
             }
 
