@@ -1,32 +1,85 @@
-﻿@model CreateBookVM
+﻿@model UpdateBookVM
 
 <div class="container">
     <div class="col-12 grid-margin stretch-card mb-5 mt-5">
         <div class="card">
             <div class="card-body">
-                <h1 class="card-title">Book Detail Section</h1>
+                <h4 class="card-title">Create Book Section</h4>
+                <form class="forms-sample" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label asp-for="Title">Title: </label>
+                        <h4>@Model.Title</h4>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BookCode">BookCode: </label>
+                        <h4>@Model.BookCode</h4>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price">Price: </label>
+                        <h4>@Model.Price</h4>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AuthorId">Author: </label>
+                        <h4>@Model.Authors.Where(x => x.Id == Model.AuthorId).FirstOrDefault().FullName</h4>
+                    </div>
+                    <div class="form-group col-2">
+                        <label asp-for="CategoryId">Category: </label>
+                        <h4>@Model.Categories.FirstOrDefault(x => x.Id == Model.CategoryId).Name</h4>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BrandId">Brand: </label>
+                        <h4>@Model.Brands.FirstOrDefault(x => x.Id == Model.BrandId).Name</h4>
+                    </div>
+                    <div class="form-group col-2">
+                        <label asp-for="Description">Description: </label>
+                        <h4>@Model.Description</h4>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TagIds">Tags: </label>
+                        <br />
+                        <h4>
+                            @{
+                                int count = 0;
+                            }
+                            @foreach (var tag in Model.Tags)
+                            {
+                                count++;
+                                @(Model.Tags.Count() != count ? tag.Name + ", " : tag.Name + "")
+                            }
+                        </h4>
 
-                <h6>Title: @Model.Title</h6>
-                <h6>BookCode: @Model.BookCode</h6>
-                <h6>Price: @Model.Price</h6>
-                <h6>Category: @Model.Categories.FirstOrDefault(x => x.Id == Model.CategoryId).Name</h6>
-                <h6>Brand: @Model.Brands.FirstOrDefault(x => x.Id == Model.BrandId).Name</h6>
-                <h6>Author: @Model.Authors.Where(x => x.Id == Model.AuthorId).FirstOrDefault().FullName</h6>
-                <h6>
-                    Tags: 
-                    @{
-                       int count = 0;
-                    }
-                    @foreach (var tag in Model.Tags)
-                    {
-                        count++;
-                        @(Model.Tags.Count() != count ? tag.Name + ", " : tag.Name + "")
-                    }
-                </h6>
-                <p>
-                    @Model.Description
-                </p>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="mb-3 col-md-4">
+                            <label asp-for="MainImage" class="form-label">Main Image: </label>
+                            <img class="mt-3" style="width:90%;height:350px" src="~/Upload/BookImages/@Model.BookImageVMs.FirstOrDefault(x => x.IsPrime == true).ImgUrl" />
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label asp-for="HoverImage" class="form-label">Hover Image: </label>
+                            <img class="mt-3" style="width:90%;height:350px" src="~/Upload/BookImages/@Model.BookImageVMs.FirstOrDefault(x => x.IsPrime == false).ImgUrl" />
+                        </div>
+                    </div>
+                    <div class="row mt-3 mb-4">
+                        <label asp-for="Images" class="form-label mb-4 mt-3">Additional Images: </label>
+                        @foreach (var item in Model.BookImageVMs.Where(p => p.IsPrime == null).ToList())
+                        {
+                            <div class="col-2 position-relative">
+                                <img style="width:100%;height:200px" src="~/Upload/BookImages/@item.ImgUrl" />
+                            </div>
+                        }
+                    </div>
+
+                    <button class="btn btn-light" asp-controller="Book" asp-action="Table">Back</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    let btn = document.querySelectorAll(".custom-delete")
+    btn.forEach(b => {
+        b.addEventListener("click", function () {
+            b.parentElement.remove()
+        })
+    })
+</script>

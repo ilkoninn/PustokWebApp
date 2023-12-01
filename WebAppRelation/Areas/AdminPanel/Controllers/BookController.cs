@@ -19,8 +19,8 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
         public async Task<IActionResult> Table()
         {
             AdminVM admin = new AdminVM();
-            admin.Brands = await _db.Brands.ToListAsync(); 
-            admin.Authors = await _db.Authors.ToListAsync(); 
+            admin.Brands = await _db.Brands.ToListAsync();
+            admin.Authors = await _db.Authors.ToListAsync();
             admin.Categories = await _db.Categories.ToListAsync();
             admin.Books = await _db.Books
                 .Include(x => x.Tags)
@@ -108,7 +108,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                 }
             }
 
-            if(createBookVM.MainImage != null)
+            if (createBookVM.MainImage != null)
             {
                 if (!createBookVM.MainImage.CheckType("image/"))
                 {
@@ -218,15 +218,15 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                 .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
                 .Include(x => x.BookImages)
-                .FirstOrDefaultAsync(p=> p.Id == Id);
+                .FirstOrDefaultAsync(p => p.Id == Id);
 
             ICollection<Tag> tags = await _db.Tags.ToListAsync();
 
             List<int> tagIds = new();
-            
+
             foreach (Tag tag in tags)
                 foreach (var item in Book.Tags)
-                    if(tag.Id == item.TagId)
+                    if (tag.Id == item.TagId)
                         tagIds.Add(tag.Id);
 
             UpdateBookVM updateBookVM = new UpdateBookVM
@@ -275,7 +275,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             oldBook.BookCode = updateBookVM.BookCode;
             oldBook.Price = updateBookVM.Price;
             oldBook.AuthorId = updateBookVM.AuthorId;
-            oldBook.CategoryId = updateBookVM.CategoryId; 
+            oldBook.CategoryId = updateBookVM.CategoryId;
             oldBook.BrandId = updateBookVM.BrandId;
             oldBook.CreatedDate = oldBook.CreatedDate;
             oldBook.UpdatedDate = DateTime.Now;
@@ -327,11 +327,6 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
                 oldBook.BookImages.Add(bookImage);
             }
-            else
-            {
-                ModelState.AddModelError("MainImage", "You must be upload a main image!");
-                return View(updateBookVM);
-            }
 
             if (updateBookVM.HoverImage != null)
             {
@@ -364,22 +359,24 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
                 oldBook.BookImages.Add(bookImage);
             }
+
+            if (updateBookVM.ImageIds == null)
+            {
+                oldBook.BookImages.RemoveAll(x => x.IsPrime == null);
+            }
             else
             {
-                ModelState.AddModelError("HoverImage", "You must be upload a hover image!");
-                return View(updateBookVM);
-            }
+                List<BookImages> removeList = oldBook.BookImages.Where(pt => !updateBookVM.ImageIds.Contains(pt.Id) && pt.IsPrime == null).ToList();
 
-            List<BookImages> removeList = oldBook.BookImages.Where(pt => !updateBookVM.ImageIds.Contains(pt.Id) && pt.IsPrime == null).ToList();
-            if (removeList.Count > 0)
-            {
-                foreach (var item in removeList)
+                if (removeList.Count > 0)
                 {
-                    oldBook.BookImages.Remove(item);
-                    item.ImgUrl.Delete(_env.WebRootPath, @"\Upload\Product\");
+                    foreach (var item in removeList)
+                    {
+                        oldBook.BookImages.Remove(item);
+                        item.ImgUrl.Delete(_env.WebRootPath, @"\Upload\BookImages\");
+                    }
                 }
             }
-
 
             TempData["Error"] = "";
             if (updateBookVM.Images != null)
@@ -396,15 +393,17 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
                         TempData["Error"] += $"{imgFile.FileName} file-nin olcusu coxdur";
                         continue;
                     }
+
                     BookImages bookImages = new BookImages()
                     {
                         IsPrime = null,
                         BookId = oldBook.Id,
-                        ImgUrl = imgFile.Upload(_env.WebRootPath, "/Upload/Product/")
+                        ImgUrl = imgFile.Upload(_env.WebRootPath, "/Upload/BookImages/")
                     };
                     oldBook.BookImages.Add(bookImages);
                 }
             }
+
 
             await _db.SaveChangesAsync();
 
@@ -413,43 +412,68 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
         public async Task<IActionResult> Detail(int Id)
         {
-            Book oldBook = await _db.Books
+            Book Book = await _db.Books
                 .Include(x => x.Tags)
                 .ThenInclude(x => x.Tag)
-                .FirstOrDefaultAsync(x => x.Id == Id);
+                .Include(x => x.BookImages)
+                .FirstOrDefaultAsync(p => p.Id == Id);
 
-            var tags = await _db.Tags.ToListAsync();
+            ICollection<Tag> tags = await _db.Tags.ToListAsync();
 
-            List<Tag> bookTags = new List<Tag>();
+            List<int> tagIds = new();
 
-            foreach (var tag in tags)
-                foreach (var item in oldBook.Tags)
+            foreach (Tag tag in tags)
+                foreach (var item in Book.Tags)
                     if (tag.Id == item.TagId)
-                        bookTags.Add(tag);
+                        tagIds.Add(tag.Id);
 
-            
-            CreateBookVM createBookVM = new CreateBookVM
+            UpdateBookVM updateBookVM = new UpdateBookVM
             {
-                Title = oldBook.Title,
-                Description = oldBook.Description,
-                BookCode = oldBook.BookCode,
-                Price = oldBook.Price,
-                CategoryId = oldBook.CategoryId,
-                BrandId = oldBook.BrandId,
-                AuthorId = oldBook.AuthorId,
+                Title = Book.Title,
+                Description = Book.Description,
+                BookCode = Book.BookCode,
+                Price = Book.Price,
+                CategoryId = Book.CategoryId,
+                BrandId = Book.BrandId,
+                AuthorId = Book.AuthorId,
                 Categories = await _db.Categories.ToListAsync(),
                 Brands = await _db.Brands.ToListAsync(),
                 Authors = await _db.Authors.ToListAsync(),
-                Tags = bookTags,
+                Tags = tags,
+                TagIds = tagIds,
+                BookImageVMs = new List<BookImageVM>(),
             };
 
-            return View(createBookVM);
+
+            foreach (var item in Book.BookImages)
+            {
+                BookImageVM bookImageVM = new BookImageVM
+                {
+                    Id = item.Id,
+                    IsPrime = item.IsPrime,
+                    ImgUrl = item.ImgUrl,
+                };
+
+                updateBookVM.BookImageVMs.Add(bookImageVM);
+            }
+
+            return View(updateBookVM);
         }
 
         public async Task<IActionResult> Delete(int Id)
         {
-            Book oldBook = await _db.Books.FindAsync(Id);
+            Book oldBook = await _db.Books
+                .Include(x => x.BookImages)
+                .FirstOrDefaultAsync(x => x.Id == Id);
+
+            _db.BookImages.RemoveRange(oldBook.BookImages);
             _db.Books.Remove(oldBook);
+
+            foreach (var item in oldBook.BookImages)
+            {
+                item.ImgUrl.Delete(_env.WebRootPath, @"\Upload\BookImages\");
+            }
+
             await _db.SaveChangesAsync();
             return RedirectToAction("Table");
         }

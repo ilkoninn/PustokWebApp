@@ -35,14 +35,17 @@ namespace BB205_Pronia.Helpers
             return fileName;
         }
 
-        public static void Delete(this string ImgUrl, string envPath, string folderName)
+        public static bool Delete(this string ImgUrl, string envPath, string folderName)
         {
             string path = envPath + folderName + ImgUrl;
 
             if (File.Exists(path))
             {
                 File.Delete(path);
+                return true;
             }
+
+            return false;
         }
     }
 }

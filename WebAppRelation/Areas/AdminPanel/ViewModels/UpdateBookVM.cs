@@ -20,8 +20,8 @@ namespace WebAppRelation.Areas.AdminPanel.ViewModels
         public IFormFile? MainImage { get; set; }
         public IFormFile? HoverImage { get; set; }
         public List<IFormFile>? Images { get; set; }
-        public List<BookImageVM> BookImageVMs { get; set; }
-        public List<int> ImageIds { get; set; }
+        public List<BookImageVM>? BookImageVMs { get; set; }
+        public List<int>? ImageIds { get; set; }
     }
 
     public class BookImageVM : BaseAuditableEntityVM

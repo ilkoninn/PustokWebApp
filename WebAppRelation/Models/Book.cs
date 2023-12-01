@@ -15,7 +15,7 @@ namespace WebAppRelation.Models
         public Author? Author { get; set; }
         public Brand? Brand { get; set; }
         public Category? Category { get; set; }
-        public ICollection<BookImages>? BookImages { get; set; }
+        public List<BookImages>? BookImages { get; set; }
         public ICollection<BookTag>? Tags { get; set; }
     }
 }

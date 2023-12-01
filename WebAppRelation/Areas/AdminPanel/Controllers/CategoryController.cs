@@ -94,6 +94,22 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
             return RedirectToAction("Table");
         }
+
+        public async Task<IActionResult> Detail(int Id)
+        {
+            ICollection<Category> categories = await _db.Categories.ToListAsync();
+            Category category = await _db.Categories.FindAsync(Id);
+            CreateCategoryVM categoryVM = new CreateCategoryVM
+            {
+                Id = Id,
+                Name = category.Name,
+                ParentCategoryId = $"{category.ParentCategoryId}",
+                categories = categories
+            };
+
+            return View(categoryVM);
+        }
+
         public async Task<IActionResult> Delete(int Id)
         {
             

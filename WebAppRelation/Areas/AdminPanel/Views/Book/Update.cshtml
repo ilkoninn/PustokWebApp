@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Create Book Section</h4>
-                <form class="forms-sample" method="post" data-encrypt>
+                <form class="forms-sample" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label asp-for="Title">Title</label>
                         <input asp-for="Title" class="form-control" placeholder="Title">
@@ -48,6 +48,7 @@
                     </div>
                     <div class="row align-items-center">
                         <div class="mb-3 col-md-4">
+                            <img class="mb-3" style="width:90%;height:300px" src="~/Upload/BookImages/@Model.BookImageVMs.FirstOrDefault(x => x.IsPrime == true).ImgUrl" />
                             <label asp-for="MainImage" class="form-label">Main Image</label>
                             <input class="form-control" asp-for="MainImage">
                             <div style="color: red; margin-top: 10px; margin-left: 10px;">
@@ -55,6 +56,7 @@
                             </div>
                         </div>
                         <div class="mb-3 col-md-4">
+                            <img class="mb-3" style="width:90%;height:300px" src="~/Upload/BookImages/@Model.BookImageVMs.FirstOrDefault(x => x.IsPrime == false).ImgUrl" />
                             <label asp-for="HoverImage" class="form-label">Hover Image</label>
                             <input class="form-control" asp-for="HoverImage">
                             <div style="color: red; margin-top: 10px; margin-left: 10px;">
@@ -71,7 +73,7 @@
                                 <button type="button" class="btn btn-danger position-absolute custom-delete" style="right:10px">X</button>
                             </div>
                         }
-                        <label asp-for="Images" class="form-label">Additional Images</label>
+                        <label asp-for="Images" class="form-label mt-4">Additional Images</label>
                         <input class="form-control" asp-for="Images">
                         <span asp-validation-for="Images" style="color:red"></span>
 
