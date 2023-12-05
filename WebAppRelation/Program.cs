@@ -13,6 +13,7 @@ namespace WebAppRelation
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
             });
+            //builder.Services.AddSingleton<>();
 
             var app = builder.Build();
 

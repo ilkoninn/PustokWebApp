@@ -5,8 +5,16 @@
       "PackagePath": "staticwebassets\\WebAppRelation.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\04086701-cf29-412e-afb2-8507f3e58282product-2.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\04086701-cf29-412e-afb2-8507f3e58282product-2.jpg"
+    },
+    {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\0822531b-e6ec-4430-94de-0666d270d820product-4.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\0822531b-e6ec-4430-94de-0666d270d820product-4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\0a0b7030-2837-48dc-85d4-7894647e7b3aproduct-4.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\0a0b7030-2837-48dc-85d4-7894647e7b3aproduct-4.jpg"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\0cb3ba4d-e043-4303-a3d8-c28ddd64fbc1product-details-4.jpg",
@@ -17,20 +25,48 @@
       "PackagePath": "staticwebassets\\Upload\\BookImages\\0ce12743-b930-4376-8091-688416baa3adproduct-4.jpg"
     },
     {
-      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\0e7f3360-84c4-4477-8d9e-3d2d143ac632product-5.jpg",
-      "PackagePath": "staticwebassets\\Upload\\BookImages\\0e7f3360-84c4-4477-8d9e-3d2d143ac632product-5.jpg"
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\19046864-cea8-42b7-80ed-915d08a4b7b9product-13.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\19046864-cea8-42b7-80ed-915d08a4b7b9product-13.jpg"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\1967641d-7206-41c9-becd-1cf56ed141deproduct-7.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\1967641d-7206-41c9-becd-1cf56ed141deproduct-7.jpg"
     },
     {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\21c54a59-436b-40a0-ae2c-7578f924eae3product-details-5.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\21c54a59-436b-40a0-ae2c-7578f924eae3product-details-5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\237d5146-de9d-4fec-be27-5fe4c87bc422product-6.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\237d5146-de9d-4fec-be27-5fe4c87bc422product-6.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\2565aa48-942c-4b74-a509-d762a60fba90product-5.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\2565aa48-942c-4b74-a509-d762a60fba90product-5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\2d7f4fef-69ac-47b8-bad2-9f5def3d00a6product-12.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\2d7f4fef-69ac-47b8-bad2-9f5def3d00a6product-12.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\2e1969e5-cd6c-4a9f-b292-15a6aa28122fproduct-13.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\2e1969e5-cd6c-4a9f-b292-15a6aa28122fproduct-13.jpg"
+    },
+    {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\3986a919-f7b3-4075-88e1-8c7f18134edcproduct-details-3.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\3986a919-f7b3-4075-88e1-8c7f18134edcproduct-details-3.jpg"
     },
     {
-      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\3dcaed33-9aa5-47b8-b10e-09a6d75cc71aproduct-13.jpg",
-      "PackagePath": "staticwebassets\\Upload\\BookImages\\3dcaed33-9aa5-47b8-b10e-09a6d75cc71aproduct-13.jpg"
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\3c8e0faf-c5f9-4b9f-87af-06cbf5fe6f11product-details-3.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\3c8e0faf-c5f9-4b9f-87af-06cbf5fe6f11product-details-3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\40f1aece-10f1-4155-9efa-38e9dbe63e7fproduct-10.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\40f1aece-10f1-4155-9efa-38e9dbe63e7fproduct-10.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\42eb7515-2909-4f9d-81a0-d5bdcc31497fproduct-6.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\42eb7515-2909-4f9d-81a0-d5bdcc31497fproduct-6.jpg"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\45532e1d-91d2-4a5a-84c3-a270af07210fproduct-11.jpg",
@@ -41,20 +77,32 @@
       "PackagePath": "staticwebassets\\Upload\\BookImages\\463a2c25-d134-4fcb-b2e9-590633581618product-6.jpg"
     },
     {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\48654180-aa07-41fa-b90b-58d8902a783bproduct-details-5.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\48654180-aa07-41fa-b90b-58d8902a783bproduct-details-5.jpg"
+    },
+    {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\49a69f75-c842-42b6-9b9e-4ee8b197a7a4product-details-3.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\49a69f75-c842-42b6-9b9e-4ee8b197a7a4product-details-3.jpg"
     },
     {
-      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\4a60afab-e59b-4e49-8196-fa0bb4e2b18cproduct-7.jpg",
-      "PackagePath": "staticwebassets\\Upload\\BookImages\\4a60afab-e59b-4e49-8196-fa0bb4e2b18cproduct-7.jpg"
-    },
-    {
-      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\4fdaa5c9-ac51-4758-8c19-91e417f8c2ddproduct-details-5.jpg",
-      "PackagePath": "staticwebassets\\Upload\\BookImages\\4fdaa5c9-ac51-4758-8c19-91e417f8c2ddproduct-details-5.jpg"
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\4e993b78-904e-4ec3-82ab-05963949c610product-10.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\4e993b78-904e-4ec3-82ab-05963949c610product-10.jpg"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\5530f1b1-526e-40dd-8b56-94830674aa40product-details-5.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\5530f1b1-526e-40dd-8b56-94830674aa40product-details-5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\56d4bf3a-502b-4f1c-b942-331b419121f4product-13.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\56d4bf3a-502b-4f1c-b942-331b419121f4product-13.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\63adcb07-da26-4aae-abb9-42e174571e1dproduct-12.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\63adcb07-da26-4aae-abb9-42e174571e1dproduct-12.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\7880f05c-f9f1-4853-ba04-7c628a7a78bfproduct-12.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\7880f05c-f9f1-4853-ba04-7c628a7a78bfproduct-12.jpg"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\8f649409-0586-4bc5-a898-1c3d68d12ac6product-5.jpg",
@@ -65,8 +113,36 @@
       "PackagePath": "staticwebassets\\Upload\\BookImages\\9683261d-80f7-4709-84e9-391a12375ecaproduct-13.jpg"
     },
     {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\99fbc0dd-7ac8-48e7-a6ff-803c6bbd4905product-9.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\99fbc0dd-7ac8-48e7-a6ff-803c6bbd4905product-9.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\9c3802b2-63ec-4afa-a156-2cf1d8f991b0product-8.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\9c3802b2-63ec-4afa-a156-2cf1d8f991b0product-8.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\9d79ace8-94de-4b7c-943e-759e42277143product-5.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\9d79ace8-94de-4b7c-943e-759e42277143product-5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\a1ad1940-312d-4045-ada5-dc6f0b5805dcproduct-7.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\a1ad1940-312d-4045-ada5-dc6f0b5805dcproduct-7.jpg"
+    },
+    {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\a5f988ac-0aae-4062-892b-b527d2a33395product-6.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\a5f988ac-0aae-4062-892b-b527d2a33395product-6.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\a7f93342-318a-4d69-a520-674333fa3812product-6.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\a7f93342-318a-4d69-a520-674333fa3812product-6.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\bc682e7f-2154-447b-8adb-3574cf7124b4product-11.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\bc682e7f-2154-447b-8adb-3574cf7124b4product-11.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\bc7d896a-bbe8-45ae-a194-4ee1f8c4e677product-1.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\bc7d896a-bbe8-45ae-a194-4ee1f8c4e677product-1.jpg"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\bc83e492-e3b4-4b5d-a92f-c5176f09521aproduct-12.jpg",
@@ -89,6 +165,10 @@
       "PackagePath": "staticwebassets\\Upload\\BookImages\\c3ae94c4-d455-4cb7-987d-857538b5d5a1product-details-5.jpg"
     },
     {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\c45cb015-cd12-42ef-a409-629255482e94product-details-5.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\c45cb015-cd12-42ef-a409-629255482e94product-details-5.jpg"
+    },
+    {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\d3b0e922-485b-47d9-bdfd-15ff3d6fdd12cart-product-1.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\d3b0e922-485b-47d9-bdfd-15ff3d6fdd12cart-product-1.jpg"
     },
@@ -97,12 +177,24 @@
       "PackagePath": "staticwebassets\\Upload\\BookImages\\d89144c7-41c6-49b1-8876-6d4058df460eproduct-details-5.jpg"
     },
     {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\dfa5bd10-548e-45a7-b253-f9bd1252d174product-details-3.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\dfa5bd10-548e-45a7-b253-f9bd1252d174product-details-3.jpg"
+    },
+    {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\e4b37dd8-fc6b-45d7-a11f-b420bf98bba7product-8.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\e4b37dd8-fc6b-45d7-a11f-b420bf98bba7product-8.jpg"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\e725382c-b360-498f-a529-a1db451b087bproduct-details-4.jpg",
       "PackagePath": "staticwebassets\\Upload\\BookImages\\e725382c-b360-498f-a529-a1db451b087bproduct-details-4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\f95e95df-3b27-4483-bde5-e7818edf37f7product-3.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\f95e95df-3b27-4483-bde5-e7818edf37f7product-3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\BookImages\\fbdfaf8c-3497-43b9-bac0-b4d3affe2f95product-5.jpg",
+      "PackagePath": "staticwebassets\\Upload\\BookImages\\fbdfaf8c-3497-43b9-bac0-b4d3affe2f95product-5.jpg"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\Upload\\SliderImages\\24d7c904-d9b7-4e66-b556-db4e2353381bproduct-details-5.jpg",
@@ -2951,6 +3043,10 @@
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\image\\products\\product-details-5.jpg",
       "PackagePath": "staticwebassets\\image\\products\\product-details-5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\js\\JavaScript.js",
+      "PackagePath": "staticwebassets\\js\\JavaScript.js"
     },
     {
       "Id": "C:\\Users\\II novbe\\Desktop\\PustokWebApp\\WebAppRelation\\wwwroot\\js\\ajax-mail.js",

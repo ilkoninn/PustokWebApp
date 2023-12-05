@@ -12,9 +12,8 @@ public class HomeController : Controller
     public IActionResult Home()
     {
         HomeVM homeVM = new HomeVM();
-        homeVM.categories = _context.Categories
+        homeVM.blogs = _context.Blogs
             .ToList();
-        homeVM.blogs = _context.Blogs.ToList();
         homeVM.books = _context.Books
             .Include(x => x.BookImages)
             .ToList();
