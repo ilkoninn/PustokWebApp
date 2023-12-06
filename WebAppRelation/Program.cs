@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebAppRelation.DAL;
 
 namespace WebAppRelation
@@ -13,6 +15,21 @@ namespace WebAppRelation
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
             });
+            builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                // Password settings.
+                options.Password.RequiredLength = 8;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.";
+
+            }).AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
             //builder.Services.AddSingleton<>();
 
             var app = builder.Build();
@@ -28,6 +45,8 @@ namespace WebAppRelation
                 pattern: "{controller=Home}/{action=Home}/{id?}");
 
             app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.Run();
         }
     }

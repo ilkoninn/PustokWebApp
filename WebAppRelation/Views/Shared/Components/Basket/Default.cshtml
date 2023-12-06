@@ -9,13 +9,13 @@
 }
 <div class="cart-block">
     <div class="cart-total">
-        <span class="text-number" id="count">
+        <span class="text-number" id="countCart">
             @Model.Count
         </span>
         <span class="text-item">
             Shopping Cart
         </span>
-        <span class="price" id="price">
+        <span class="price" id="totalPrice">
             £@Total2
             <i class="fas fa-chevron-down"></i>
         </span>
@@ -23,7 +23,7 @@
     <div class="cart-dropdown-block">
         @foreach (var item in Model)
         {
-            <div class=" single-cart-block ">
+            <div class="single-cart-block">
                 <div class="cart-product">
                     <a class="image">
                         <img src="~/Upload/BookImages/@item.ImgUrl" alt="">
@@ -34,13 +34,11 @@
                                 @item.Title
                             </a>
                         </h3>
-                        <p class="price"><span class="qty">@item.Count ×</span> $@item.Price</p>
+                        <p class="price"><span class="qty" id="countItem">@item.Count ×</span> £<span id="itemPrice">@item.Price</span></p>
                             <a asp-controller="Basket" asp-action="DeleteItem" asp-route-id="@item.Id" class="cross-btn rem-btn"><i class="fas fa-times"></i></a>
                     </div>
                 </div>
             </div>
-
-
         }
         <div class=" single-cart-block ">
             <div class="btn-block">

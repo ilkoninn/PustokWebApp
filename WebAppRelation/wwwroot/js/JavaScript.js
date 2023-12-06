@@ -1,9 +1,11 @@
 ﻿let RemoveBtns = document.querySelectorAll(".rem-btn");
-let countField = document.getElementById("count");
-let priceField = document.getElementById("price");
+let totalPriceInner = document.querySelector("#totalPrice")
+let totalPrice = parseInt(document.querySelector("#totalPrice").innerHTML.split("£")[1]);
 
 RemoveBtns.forEach(btn => btn.addEventListener("click", function (e) {
     e.preventDefault()
+
+    console.log(totalPriceInner)
 
     Swal.fire({
         title: "Are you sure?",
@@ -20,9 +22,18 @@ RemoveBtns.forEach(btn => btn.addEventListener("click", function (e) {
             fetch(btnLink).then(function (result) {
                 console.log(result.status)
                 if (result.status == 200) {
+                    let itemPrice = parseInt(document.querySelector("#itemPrice").innerHTML)
+
+                    console.log(itemPrice)
+
                     btn.parentElement.parentElement.remove();
                     countField.innerHTML -= 1
-                    priceField.innerHTML -= btn.parentElement.getElementsByTagName("span")
+                    totalPrice -= itemPrice
+
+                    console.log(totalPrice)
+
+                    totalPriceInner.innerHTML = totalPrice
+
                     Swal.fire({
                         title: "Deleted!",
                         text: "Your file has been deleted.",

@@ -32,9 +32,9 @@
                                     @foreach (var item in Model)
                                     {
                                         Total += (item.Count * item.Price);
-                                        <tr>
+                                        <tr id="bookId">
                                             <td class="pro-remove">
-                                                <a asp-action="DeleteItem" asp-route-id="@item.Id" class="rem-btn"><i class="far fa-trash-alt"></i></a>
+                                                <a asp-controller="Basket" asp-action="DeleteItem" asp-route-id="@item.Id" class="rem-btn"><i class="far fa-trash-alt"></i></a>
                                             </td>
                                             <td class="pro-thumbnail">
                                                 <a href="#">
@@ -296,7 +296,7 @@
                     <div class="cart-summary">
                         <div class="cart-summary-wrap">
                             <h4><span>Cart Summary</span></h4>
-                            <h2>Grand Total <span class="text-primary">$@Total</span></h2>
+                            <h2>Grand Total <span class="text-primary" id="totalPriceInCart">$@Total</span></h2>
                         </div>
                         <div class="cart-summary-button">
                             <a href="checkout.html" class="checkout-btn c-btn btn--primary">Checkout</a>
