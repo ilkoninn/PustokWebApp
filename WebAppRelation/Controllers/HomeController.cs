@@ -15,6 +15,7 @@ public class HomeController : Controller
         homeVM.blogs = _context.Blogs
             .ToList();
         homeVM.books = _context.Books
+            .Include(x => x.Author)
             .Include(x => x.BookImages)
             .ToList();
 

@@ -1,0 +1,27 @@
+﻿@model List<Book>
+
+@foreach (var item in Model)
+{
+    <div class="single-slide">
+        <div class="product-card card-style-list">
+            <div class="card-image">
+                <img src="~/Upload/BookImages/@item.BookImages.FirstOrDefault(x => x.IsPrime == true).ImgUrl" alt="">
+            </div>
+            <div class="product-card--body">
+                <div class="product-header">
+                    <a href="#" class="author">
+                        @item.Author.FullName
+                    </a>
+                    <h3>
+                        <a href="product-details.html">
+                            @item.Description
+                        </a>
+                    </h3>
+                </div>
+                <div class="price-block">
+                    <span class="price">£@item.Price</span> 
+                </div>
+            </div>
+        </div>
+    </div>
+}

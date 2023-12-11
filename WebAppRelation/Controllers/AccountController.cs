@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
+using BB205_Pronia.Helpers;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using WebAppRelation.Enums;
 
 namespace WebAppRelation.Controllers
 {
@@ -8,10 +9,12 @@ namespace WebAppRelation.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -24,7 +27,7 @@ namespace WebAppRelation.Controllers
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(registerVM);
             }
@@ -34,21 +37,119 @@ namespace WebAppRelation.Controllers
                 Name = registerVM.Name,
                 Email = registerVM.Email,
                 Surname = registerVM.Surname,
-                UserName = registerVM.UserName,
+                UserName = registerVM.Username,
             };
 
-            var result = await _userManager.CreateAsync(appUser, registerVM.Password);
+            var resultEmail = await _userManager.FindByEmailAsync(registerVM.Email);
 
-            if (!result.Succeeded)
+            if (resultEmail == null)
             {
-                foreach (var item in result.Errors)
+                var result = await _userManager.CreateAsync(appUser, registerVM.Password);
+                await _userManager.AddToRoleAsync(appUser, "Member");
+
+                if (!result.Succeeded)
                 {
-                    ModelState.AddModelError("", item.Description);
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    return View(registerVM);
                 }
-                return View(registerVM);
+
+                return RedirectToAction(nameof(Login));
+            }
+            else
+            {
+                ModelState.AddModelError("Email", "This email used before, please try another email!");
+                return View();
+            }
+        }
+
+        public async Task<IActionResult> Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginVM loginVM, string? returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            AppUser user = await _userManager.FindByNameAsync(loginVM.UsernameOrEmail);
+
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(loginVM.UsernameOrEmail);
+                
+                if(user == null)
+                {
+                    ModelState.AddModelError("", "Username/Email or password is not valid!");
+                    return View();
+                }
+
             }
 
-            await _signInManager.SignInAsync(appUser, false);
+            if (user != null)
+            {
+                var result = _signInManager.CheckPasswordSignInAsync(user, loginVM.Password, true).Result;
+
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Username/Email or password is not valid!");
+                }
+                if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError("", "Please, try again later!");
+                }
+
+                await _signInManager.SignInAsync(user, loginVM.RememberMe);
+                if(returnUrl != null)
+                {
+                    return RedirectToAction(returnUrl);
+                }
+                return RedirectToAction("Home", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Username/Email or password is not valid!");
+                return View();
+            }
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+        }
+
+        public async Task<IActionResult> CreateRole()
+        {
+            //string[] userRoles = { "Admin", "Member", "Moderator"};
+
+            //foreach (var userRole in userRoles)
+            //{
+            //    var roleExist = await _roleManager.RoleExistsAsync(userRole);
+            //    if (!roleExist)
+            //    {
+            //        await _roleManager.CreateAsync(new IdentityRole()
+            //        {
+            //            Name = userRole
+            //        });
+            //    }
+            //}
+
+            foreach (var item in Enum.GetValues(typeof(UserRole)))
+            {
+                var roleExist = await _roleManager.RoleExistsAsync(item.ToString());
+                if (!roleExist)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole()
+                    {
+                        Name = item.ToString()
+                    });
+                }
+            }
 
             return RedirectToAction("Home", "Home");
         }

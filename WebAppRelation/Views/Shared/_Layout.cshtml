@@ -40,9 +40,7 @@
                             <div class="main-navigation flex-lg-right">
                                 <ul class="main-menu menu-right ">
                                     <li class="menu-item has-children">
-                                        <a href="javascript:void(0)">
-                                            Home
-                                        </a>
+                                        <a asp-action="Home" asp-controller="Home">Home</a>
                                     </li>
                                     <!-- Shop -->
                                     <li class="menu-item has-children">
@@ -80,11 +78,15 @@
                                     <li><a href="wishlist.html">Wishlist</a></li>*@
                                     @if (User.Identity.IsAuthenticated)
                                     {
-                                        <li><a>My Account</a></li>
+                                        <li><a>@User.Identity.Name</a></li>
+                                        <br />
+                                        <li><a asp-controller="Account" asp-action="Logout">Log out</a></li>
+
                                     }
                                     else
                                     {
                                         <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                                        <li><a asp-controller="Account" asp-action="Login">Login</a></li>
                                     }
 
                                     
@@ -165,8 +167,18 @@
                             <div class="main-navigation flex-lg-right">
                                 <div class="cart-widget">
                                     <div class="login-block">
-                                        <a href="login-register.html" class="font-weight-bold">Login</a> <br>
-                                        <span>or</span><a href="login-register.html">Register</a>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li><a>@User.Identity.Name</a></li>
+                                            <br />
+                                            <li><a asp-controller="Account" asp-action="Logout">Log out</a></li>
+
+                                        }
+                                        else
+                                        {
+                                            <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                                            <li><a asp-controller="Account" asp-action="Login">Login</a></li>
+                                        }
                                     </div>
                                     @await Component.InvokeAsync("Basket")
                                 </div>
@@ -344,14 +356,7 @@
                         <nav class="off-canvas-nav">
                             <ul class="mobile-menu main-mobile-menu">
                                 <li class="menu-item-has-children">
-                                    <a href="#">Home</a>
-                                    <ul class="sub-menu">
-                                        <li> <a href="index.html">Home One</a></li>
-                                        <li> <a href="index-2.html">Home Two</a></li>
-                                        <li> <a href="index-3.html">Home Three</a></li>
-                                        <li> <a href="index-4.html">Home Four</a></li>
-                                        <li> <a href="index-5.html">Home Five</a></li>
-                                    </ul>
+                                    <a asp-action="Home" asp-controller="Home">Home</a>
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="#">Blog</a>
@@ -444,8 +449,18 @@
                                         <li><a href="checkout.html">Checkout</a></li>
                                         <li><a href="compare.html">Compare</a></li>
                                         <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li><a href="login-register.html">Login Register</a></li>
-                                        <li><a href="my-account.html">My Account</a></li>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li><a>@User.Identity.Name</a></li>
+                                            <br />
+                                            <li><a asp-controller="Account" asp-action="Logout">Log out</a></li>
+
+                                        }
+                                        else
+                                        {
+                                            <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                                            <li><a asp-controller="Account" asp-action="Login">Login</a></li>
+                                        }
                                         <li><a href="order-complete.html">Order Complete</a></li>
                                         <li><a href="faq.html">Faq</a></li>
                                         <li><a href="contact-2.html">contact 02</a></li>
@@ -512,18 +527,9 @@
                     </div>
                     <div class="col-lg-8">
                         <div class="main-navigation flex-lg-right">
-                            <ul class="main-menu menu-right ">
+                            <ul class="    ">
                                 <li class="menu-item has-children">
-                                    <a href="javascript:void(0)">
-                                        Home <i class="fas fa-chevron-down dropdown-arrow"></i>
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li> <a href="index.html">Home One</a></li>
-                                        <li> <a href="index-2.html">Home Two</a></li>
-                                        <li> <a href="index-3.html">Home Three</a></li>
-                                        <li> <a href="index-4.html">Home Four</a></li>
-                                        <li> <a href="index-5.html">Home Five</a></li>
-                                    </ul>
+                                    <a asp-action="Home" asp-controller="Home">Home</a>
                                 </li>
                                 <!-- Shop -->
                                 <li class="menu-item has-children mega-menu">
@@ -595,8 +601,18 @@
                                         <li><a href="checkout.html">Checkout</a></li>
                                         <li><a href="compare.html">Compare</a></li>
                                         <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li><a href="login-register.html">Login Register</a></li>
-                                        <li><a href="my-account.html">My Account</a></li>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li><a>@User.Identity.Name</a></li>
+                                            <br />
+                                            <li><a asp-controller="Account" asp-action="Logout">Log out</a></li>
+
+                                        }
+                                        else
+                                        {
+                                            <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                                            <li><a asp-controller="Account" asp-action="Login">Login</a></li>
+                                        }
                                         <li><a href="order-complete.html">Order Complete</a></li>
                                         <li><a href="faq.html">Faq</a></li>
                                         <li><a href="contact-2.html">contact 02</a></li>

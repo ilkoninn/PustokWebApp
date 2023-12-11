@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using WebAppRelation.Models;
 
 namespace WebAppRelation.Areas.AdminPanel.Controllers
@@ -16,6 +17,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
 
         // <--- Table Section --->
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> Table()
         {
             AdminVM admin = new AdminVM();
@@ -34,6 +36,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
         // <--- Create Section --->
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             ICollection<Category> categories = await _db.Categories.ToListAsync();
@@ -51,6 +54,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             return View(createBookVM);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateBookVM createBookVM)
         {
             createBookVM.Authors = await _db.Authors.ToListAsync();
@@ -212,6 +216,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
         // <--- Update Section --->
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int Id)
         {
             Book Book = await _db.Books
@@ -261,7 +266,9 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
 
             return View(updateBookVM);
         }
+
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(UpdateBookVM updateBookVM)
         {
             Book oldBook = await _db.Books
@@ -410,6 +417,10 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             return RedirectToAction("Table");
         }
 
+        // <--- Detail Section --->
+
+        [HttpGet]
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> Detail(int Id)
         {
             Book Book = await _db.Books
@@ -460,6 +471,7 @@ namespace WebAppRelation.Areas.AdminPanel.Controllers
             return View(updateBookVM);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int Id)
         {
             Book oldBook = await _db.Books
