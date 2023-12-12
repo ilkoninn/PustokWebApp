@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace WebAppRelation.Controllers
@@ -6,95 +7,149 @@ namespace WebAppRelation.Controllers
     public class BasketController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BasketController(AppDbContext context)
+
+
+        public BasketController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<BasketItemVM> basket = new();
+
             var books = _context.Books
                 .Include(x => x.BookImages)
                 .ToList();
             var cookieItems = Request.Cookies["Basket"];
 
-            if(cookieItems != null)
+            if (User.Identity.IsAuthenticated)
             {
-                var cookies = JsonConvert.DeserializeObject<List<CookieItemVM>>(cookieItems);
+                AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-                foreach (var cookie in cookies)
+                List<BasketItem> basketItems = await _context.BasketItems
+                    .Where(x => x.AppUserId == user.Id)
+                    .Include(x => x.Book) 
+                    .ThenInclude(x => x.BookImages)
+                    .ToListAsync();
+
+                foreach (var item in basketItems)
                 {
-                    foreach (var book in books)
+                    basket.Add(new BasketItemVM()
                     {
-                        if (cookie.Id == book.Id)
-                        {
-                            basket.Add(new BasketItemVM
-                            {
-                                Id = book.Id,
-                                ImgUrl = book.BookImages.FirstOrDefault(x => x.IsPrime == true).ImgUrl,
-                                Price = book.Price,
-                                Title = book.Title,
-                                Count = cookie.Count,
-                            });
-                        }
-                    }
+                        Id = item.Id,
+                        Title = item.Book.Title,
+                        Price = item.Book.Price,
+                        ImgUrl = item.Book.BookImages.FirstOrDefault().ImgUrl,
+                        Count = item.Count,
+                    });
                 }
 
-                return View(basket);
             }
             else
             {
-                return View(basket);
+                if (cookieItems != null)
+                {
+                    var cookies = JsonConvert.DeserializeObject<List<CookieItemVM>>(cookieItems);
+
+                    foreach (var cookie in cookies)
+                    {
+                        foreach (var book in books)
+                        {
+                            if (cookie.Id == book.Id)
+                            {
+                                basket.Add(new BasketItemVM
+                                {
+                                    Id = book.Id,
+                                    ImgUrl = book.BookImages.FirstOrDefault(x => x.IsPrime == true).ImgUrl,
+                                    Price = book.Price,
+                                    Title = book.Title,
+                                    Count = cookie.Count,
+                                });
+                            }
+                        }
+                    }
+                }
             }
 
-
-
-
+            return View(basket);
         }
 
-        public IActionResult AddItem(int id)
+        public async Task<IActionResult> AddItem(int id)
         {
             var cookiesJson = Request.Cookies["Basket"];
 
             List<CookieItemVM> cookies;
 
-            if (cookiesJson != null)
+            if (User.Identity.IsAuthenticated)
             {
-                cookies = JsonConvert.DeserializeObject<List<CookieItemVM>>(cookiesJson);
+                AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+                Book book = await _context.Books
+                    .Include(x => x.BookImages)
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
-                foreach (var cookie in cookies)
+                BasketItem oldBasketItem = await _context.BasketItems.FirstOrDefaultAsync(x => x.BookId == id && x.AppUserId == user.Id);
+
+                if(oldBasketItem == null)
                 {
-                    if (cookie.Id == id)
+                    BasketItem newBasketItem = new BasketItem()
                     {
-                        cookie.Count += 1;
-                        Response.Cookies.Append("Basket", JsonConvert.SerializeObject(cookies));
-
-                        return RedirectToAction("Home", "Home");
-                    }
+                        Price = book.Price,
+                        Count = 1,
+                        AppUser = user,
+                        Book = book,
+                    };
+                    
+                    await _context.BasketItems.AddAsync(newBasketItem);
+                }
+                else
+                {
+                    oldBasketItem.Count += 1;
                 }
 
-                CookieItemVM CookieItemVM = new CookieItemVM()
-                {
-                    Id = id,
-                    Count = 1
-                };
-
-                cookies.Add(CookieItemVM);
-
-                Response.Cookies.Append("Basket", JsonConvert.SerializeObject(cookies));
+                await _context.SaveChangesAsync();
             }
             else
             {
-                cookies = new List<CookieItemVM>();
-                CookieItemVM CookieItemVM = new CookieItemVM()
+                if (cookiesJson != null)
                 {
-                    Id = id,
-                    Count = 1
-                };
-                cookies.Add(CookieItemVM);
-                Response.Cookies.Append("Basket", JsonConvert.SerializeObject(cookies));
+                    cookies = JsonConvert.DeserializeObject<List<CookieItemVM>>(cookiesJson);
+
+                    foreach (var cookie in cookies)
+                    {
+                        if (cookie.Id == id)
+                        {
+                            cookie.Count += 1;
+                            Response.Cookies.Append("Basket", JsonConvert.SerializeObject(cookies));
+
+                            return RedirectToAction("Home", "Home");
+                        }
+                    }
+
+                    CookieItemVM CookieItemVM = new CookieItemVM()
+                    {
+                        Id = id,
+                        Count = 1
+                    };
+
+                    cookies.Add(CookieItemVM);
+
+                    Response.Cookies.Append("Basket", JsonConvert.SerializeObject(cookies));
+                }
+                else
+                {
+                    cookies = new List<CookieItemVM>();
+                    CookieItemVM CookieItemVM = new CookieItemVM()
+                    {
+                        Id = id,
+                        Count = 1
+                    };
+                    cookies.Add(CookieItemVM);
+                    Response.Cookies.Append("Basket", JsonConvert.SerializeObject(cookies));
+                }
             }
 
             return RedirectToAction("Home", "Home");

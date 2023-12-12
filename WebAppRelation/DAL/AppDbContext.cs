@@ -16,4 +16,5 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<Author> Authors { get; set; }
     public DbSet<BlogTag> BlogTags { get; set; }
     public DbSet<BookTag> BookTags { get; set; }
+    public DbSet<BasketItem> BasketItems { get; set; }
 }

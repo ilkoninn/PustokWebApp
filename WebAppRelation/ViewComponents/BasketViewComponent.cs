@@ -1,14 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace WebAppRelation.ViewComponents
 {
     public class BasketViewComponent : ViewComponent
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BasketViewComponent(AppDbContext context)
+        public BasketViewComponent(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -20,7 +23,31 @@ namespace WebAppRelation.ViewComponents
 
             var cookieItems = Request.Cookies["Basket"];
 
-            if(cookieItems != null)
+            if (User.Identity.IsAuthenticated)
+            {
+                AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+                List<BasketItem> basketItems = await _context.BasketItems
+                    .Where(x => x.AppUserId == user.Id)
+                    .Include(x => x.Book)
+                    .ThenInclude(x => x.BookImages)
+                    .ToListAsync();
+
+                foreach (var item in basketItems)
+                {
+                    basket.Add(new BasketItemVM()
+                    {
+                        Id = item.Id,
+                        Title = item.Book.Title,
+                        Price = item.Book.Price,
+                        ImgUrl = item.Book.BookImages.FirstOrDefault().ImgUrl,
+                        Count = item.Count,
+                    });
+                }
+
+            }
+            else
+            {
+                if(cookieItems != null)
             {
                 var cookies = JsonConvert.DeserializeObject<List<CookieItemVM>>(cookieItems);
 
@@ -44,12 +71,10 @@ namespace WebAppRelation.ViewComponents
 
                 return View(basket);
             }
-            else
-            {
-                return View(basket);
             }
 
-            
+
+            return View(basket);
         }
     }
 }

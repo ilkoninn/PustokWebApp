@@ -45,7 +45,7 @@ namespace WebAppRelation.Controllers
             if (resultEmail == null)
             {
                 var result = await _userManager.CreateAsync(appUser, registerVM.Password);
-                await _userManager.AddToRoleAsync(appUser, "Member");
+                await _userManager.AddToRoleAsync(appUser, "Admin");
 
                 if (!result.Succeeded)
                 {
@@ -106,7 +106,7 @@ namespace WebAppRelation.Controllers
                 await _signInManager.SignInAsync(user, loginVM.RememberMe);
                 if(returnUrl != null)
                 {
-                    return RedirectToAction(returnUrl);
+                    return Redirect(returnUrl);
                 }
                 return RedirectToAction("Home", "Home");
             }
